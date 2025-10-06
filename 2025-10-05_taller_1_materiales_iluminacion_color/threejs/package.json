@@ -1,0 +1,31 @@
+{
+  "name": "taller1-threejs-local",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Taller 1: Materiales, Iluminación y Color - Proyecto Three.js Local",
+  "main": "src/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "vite preview --port 3000"
+  },
+  "devDependencies": {
+    "vite": "^4.4.5"
+  },
+  "dependencies": {
+    "three": "^0.157.0",
+    "@tweenjs/tween.js": "^21.0.0",
+    "dat.gui": "^0.7.9"
+  },
+  "keywords": [
+    "threejs",
+    "webgl",
+    "3d",
+    "materials",
+    "lighting",
+    "pbr"
+  ],
+  "author": "Juan Daleman",
+  "license": "MIT"
+}

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taller 1: Materiales, Iluminación y Color</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: white;
+            overflow: hidden;
+        }
+
+        #canvas-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #ui-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .ui-section {
+            margin-bottom: 15px;
+        }
+
+        .ui-section h3 {
+            color: #4CAF50;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin: 2px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        button.active {
+            background: #FF5722;
+        }
+
+        .controls-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 200;
+        }
+
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4CAF50;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container">
+        <!-- Loading Screen -->
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <p>Cargando mundo virtual...</p>
+        </div>
+
+        <!-- UI Panel -->
+        <div id="ui-panel">
+            <div class="ui-section">
+                <h3>🎥 Cámaras</h3>
+                <button id="camera-perspective" class="active">Perspectiva</button>
+                <button id="camera-orthographic">Ortográfica</button>
+            </div>
+
+            <div class="ui-section">
+                <h3>💡 Iluminación</h3>
+                <button id="lighting-day">Día</button>
+                <button id="lighting-sunset">Atardecer</button>
+                <button id="lighting-night">Noche</button>
+            </div>
+
+            <div class="ui-section">
+                <h3>🎬 Animaciones</h3>
+                <button id="animate-camera">Recorrido Cámara</button>
+                <button id="animate-objects">Objetos</button>
+                <button id="animate-lights">Luces</button>
+            </div>
+
+            <div class="ui-section">
+                <h3>📊 Debug</h3>
+                <button id="toggle-wireframe">Wireframe</button>
+                <button id="toggle-helpers">Helpers</button>
+                <button id="reset-scene">Reset</button>
+            </div>
+        </div>
+
+        <!-- Controls Info -->
+        <div class="controls-info">
+            <strong>Controles:</strong><br>
+            • Mouse: Rotar cámara<br>
+            • Scroll: Zoom<br>
+            • C: Alternar cámara<br>
+            • L: Cambiar iluminación<br>
+            • A: Iniciar animaciones<br>
+            • R: Reset escena
+        </div>
+    </div>
+
+    <script type="module" src="src/main.js"></script>
+</body>
+</html>
