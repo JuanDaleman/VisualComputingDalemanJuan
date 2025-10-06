@@ -191,7 +191,7 @@ La paleta se basa en contrastes complementarios que mantienen legibilidad visual
 │   ├── qwantani_sunset_puresky_4k.exr
 │   └── zawiszy_czarnego_4k.hdr
 ├── renders/
-│   ├── scene.gif                    # Demo animado de la escena
+│   ├── scene.mp4                    # Video demo de la escena
 │   └── images/                      # Capturas del proceso
 ├── README.md
 └── ficha_tecnica.md
@@ -201,7 +201,7 @@ La paleta se basa en contrastes complementarios que mantienen legibilidad visual
 
 ### Video Demostrativo
 
-**[Video de la Escena Completa](renders/scene.gif)**
+**[Video de la Escena Completa](renders/scene.mp4)**
 
 El video muestra:
 
