@@ -1,0 +1,26 @@
+# Scripts de utilidad local
+2025-10-19_taller_cv_3d/04_imagen_matriz_pixeles/fix_notebook.py
+
+# Backups de notebooks
+*.ipynb.backup
+
+# Directorios de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entornos virtuales
+venv/
+env/
+ENV/
+
+# Archivos de VS Code
+.vscode/
+*.code-workspace
+
+# Archivos de Jupyter
+.ipynb_checkpoints/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
