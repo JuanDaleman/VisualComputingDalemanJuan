@@ -168,8 +168,6 @@ La paleta se basa en contrastes complementarios que mantienen legibilidad visual
 
 ```
 2025-10-05_taller_1_materiales_iluminacion_color/
-├── threejs/
-│   └── project.json
 ├── threejs/                         # Proyecto Three.js
 │   ├── src/
 │   │   ├── main.js                  # Aplicación principal
