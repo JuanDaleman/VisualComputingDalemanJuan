@@ -1,0 +1,34 @@
+{
+  "name": "taller3-punto1-materiales-luz",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Taller 3 Punto 1: Materiales, Luz y Color (PBR y modelos cromáticos)",
+  "main": "src/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "vite preview --port 3000"
+  },
+  "devDependencies": {
+    "vite": "^4.4.5"
+  },
+  "dependencies": {
+    "three": "^0.157.0",
+    "@tweenjs/tween.js": "^21.0.0",
+    "dat.gui": "^0.7.9",
+    "chroma-js": "^2.4.2"
+  },
+  "keywords": [
+    "threejs",
+    "webgl",
+    "3d",
+    "materials",
+    "lighting",
+    "pbr",
+    "color-analysis",
+    "cielab"
+  ],
+  "author": "Juan Daleman",
+  "license": "MIT"
+}

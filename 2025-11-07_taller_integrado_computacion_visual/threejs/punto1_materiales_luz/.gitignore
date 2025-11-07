@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build outputs
+dist/
+.vite/
+*.local
+
+# IDE
+.vscode/*
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Assets (large files copied from parent directory)
+# Keep these ignored to avoid bloating the repository
+public/models/*.glb
+public/textures/**/*
+public/hdri/*.hdr
+public/hdri/*.exr
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temp
+.temp/
+.cache/
