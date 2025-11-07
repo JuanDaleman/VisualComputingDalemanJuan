@@ -11,6 +11,7 @@ import LightingManager from './managers/LightingManager.js';
 import MaterialManager from './managers/MaterialManager.js';
 import AnimationManager from './managers/AnimationManager.js';
 import UIManager from './managers/UIManager.js';
+import ProceduralGeometryManager from './managers/ProceduralGeometryManager.js';
 import ColorAnalyzer from './ColorAnalyzer.js';
 
 class TallerApp {
@@ -26,6 +27,7 @@ class TallerApp {
         this.animationManager = null;
         this.uiManager = null;
         this.colorAnalyzer = null;  // NEW
+        this.proceduralGeometryManager = null;  // NEW for Point 2
         
         // Core Three.js objects
         this.renderer = null;
@@ -106,7 +108,14 @@ class TallerApp {
         this.lightingManager = new LightingManager(this.scene);
         this.materialManager = new MaterialManager();
         this.animationManager = new AnimationManager(this.scene);
-        this.colorAnalyzer = new ColorAnalyzer();  // NEW
+        this.colorAnalyzer = new ColorAnalyzer();  // Point 1
+        
+        // Initialize ProceduralGeometryManager (Point 2)
+        this.proceduralGeometryManager = new ProceduralGeometryManager(
+            this.scene, 
+            this.materialManager
+        );
+        
         this.uiManager = new UIManager(this);
         
         // Setup orbit controls
@@ -119,54 +128,32 @@ class TallerApp {
         this.controls.screenSpacePanning = false;
         this.controls.minDistance = 1;
         this.controls.maxDistance = 100;
-        
-        console.log('🎨 ColorAnalyzer initialized');
     }
 
     setupEventListeners() {
-        // Window resize
         window.addEventListener('resize', this.onWindowResize.bind(this));
     }
 
     initializeColorAnalysis() {
-        // The ColorAnalyzer is already initialized with default palette
-        console.log('🎨 Color Analysis ready. Available commands:');
-        console.log('   app.colorAnalyzer.printAnalysis() - Print full analysis');
-        console.log('   app.colorAnalyzer.exportAnalysis() - Export data');
-        console.log('   app.colorAnalyzer.generateMarkdownReport() - Generate MD report');
-        
-        // Make app globally accessible for debugging
         window.app = this;
     }
 
     async loadAssets() {
-        console.log('📦 Loading assets...');
-        
-        // Clear any existing scene objects first
         this.clearExistingObjects();
         
         try {
-            // Try to load the main GLB scene first
             const mainSceneLoaded = await this.loadMainScene();
             
-            // Load individual models only if main scene failed
             if (!mainSceneLoaded) {
-                console.log('📦 Loading individual models as fallback...');
                 await this.loadIndividualModels();
             }
             
-            // Load HDRI environments
             await this.loadEnvironments();
-            
-            // Setup initial lighting
             this.lightingManager.setupDefaultLighting();
-            
-            // Update material count in UI
             this.updateMaterialInfo();
             
         } catch (error) {
             console.error('Error loading assets:', error);
-            // Create fallback scene if loading fails
             this.createFallbackScene();
         }
     }
@@ -174,30 +161,21 @@ class TallerApp {
     async loadMainScene() {
         const possiblePaths = [
             '/models/scene_complete.glb',
-            '/models/ScaledMclaren.glb'  // Fallback to McLaren if scene_complete doesn't exist
+            '/models/ScaledMclaren.glb'
         ];
         
         for (const path of possiblePaths) {
             try {
-                console.log(`Trying to load: ${path}`);
                 const gltf = await this.gltfLoader.loadAsync(path);
-                console.log('✅ Main scene loaded:', gltf);
-                
                 this.scene.add(gltf.scene);
                 this.loadedModels.set('main_scene', gltf);
-                
                 this.analyzeLoadedScene(gltf);
-                
-                console.log('✅ Main scene loaded successfully');
                 return true;
-                
             } catch (error) {
-                console.log(`⚠️ Could not load ${path}:`, error.message);
                 continue;
             }
         }
         
-        console.log('⚠️ No main scene GLB found, will load individual models');
         return false;
     }
 
@@ -211,14 +189,11 @@ class TallerApp {
         const loadPromises = models.map(async (model) => {
             try {
                 const gltf = await this.gltfLoader.loadAsync(model.path);
-                console.log(`✅ Loaded ${model.name}:`, gltf);
-                
                 this.positionModel(gltf.scene, model.name);
                 this.scene.add(gltf.scene);
                 this.loadedModels.set(model.name, gltf);
-                
             } catch (error) {
-                console.error(`❌ Failed to load ${model.name}:`, error);
+                console.error(`Failed to load ${model.name}:`, error);
             }
         });
         
@@ -228,7 +203,6 @@ class TallerApp {
     async loadEnvironments() {
         const environments = [
             { name: 'sunset', path: '/hdri/qwantani_sunset_puresky_4k.exr' },
-            // { name: 'day', path: '/hdri/zawiszy_czarnego_4k.hdr' },  // Uncomment when HDR file is available
         ];
         
         for (const env of environments) {
@@ -242,17 +216,13 @@ class TallerApp {
                 
                 texture.mapping = THREE.EquirectangularReflectionMapping;
                 this.lightingManager.addEnvironment(env.name, texture);
-                console.log(`✅ Loaded environment: ${env.name}`);
-                
             } catch (error) {
-                console.error(`❌ Failed to load environment ${env.name}:`, error);
+                console.error(`Failed to load environment ${env.name}:`, error);
             }
         }
     }
 
     analyzeLoadedScene(gltf) {
-        console.log('🔍 Analyzing loaded scene...');
-        
         const analysis = {
             meshes: [],
             materials: [],
@@ -279,7 +249,6 @@ class TallerApp {
             if (child.isCamera) analysis.cameras.push(child);
         });
         
-        console.log('📊 Scene Analysis:', analysis);
         return analysis;
     }
 
@@ -319,14 +288,9 @@ class TallerApp {
                 }
             }
         });
-        
-        console.log(`🧹 Cleared ${objectsToRemove.length} existing objects`);
     }
 
     createFallbackScene() {
-        console.log('🔧 Creating fallback scene...');
-        
-        // Create demo spheres with different materials
         const materials = ['metal', 'concrete', 'wood', 'glass'];
         materials.forEach((matName, index) => {
             const geometry = new THREE.SphereGeometry(0.5, 32, 32);
@@ -338,7 +302,6 @@ class TallerApp {
             this.scene.add(sphere);
         });
         
-        // Add ground plane
         const groundGeometry = new THREE.PlaneGeometry(20, 20);
         const groundMaterial = this.materialManager.getMaterial('concrete');
         const ground = new THREE.Mesh(groundGeometry, groundMaterial);
@@ -347,8 +310,6 @@ class TallerApp {
         ground.receiveShadow = true;
         ground.name = 'FallbackGround';
         this.scene.add(ground);
-        
-        console.log('🔧 Fallback scene created with material showcase');
     }
 
     applyMaterialToScene(materialName) {
@@ -370,20 +331,15 @@ class TallerApp {
         });
         
         this.currentMaterial = materialName;
-        console.log(`✅ Applied ${materialName} material to ${count} objects`);
         this.uiManager.showNotification(`Material: ${materialName.toUpperCase()}`, 'info');
     }
 
     startMaterialAnimation() {
-        console.log('🎨 Starting material animation...');
-        
-        // Stop any existing material animation
         this.stopMaterialAnimation();
         
         const materials = ['metal', 'concrete', 'wood', 'glass'];
         let currentIndex = 0;
         
-        // Apply first material immediately
         this.scene.traverse((child) => {
             if (child.isMesh && !child.name?.includes('Ground')) {
                 child.material = this.materialManager.getMaterial(materials[currentIndex]);
@@ -391,12 +347,9 @@ class TallerApp {
         });
         this.currentMaterial = materials[currentIndex];
         this.uiManager.showNotification(`Material Animation: ${materials[currentIndex].toUpperCase()}`, 'info');
-        console.log(`✅ Applied ${materials[currentIndex]} material`);
         currentIndex = (currentIndex + 1) % materials.length;
         
-        // Continue cycling through materials
         this.materialAnimationInterval = setInterval(() => {
-            // Apply material without calling applyMaterialToScene to avoid recursion
             this.scene.traverse((child) => {
                 if (child.isMesh && !child.name?.includes('Ground')) {
                     child.material = this.materialManager.getMaterial(materials[currentIndex]);
@@ -404,24 +357,20 @@ class TallerApp {
             });
             this.currentMaterial = materials[currentIndex];
             this.uiManager.showNotification(`Material Animation: ${materials[currentIndex].toUpperCase()}`, 'info');
-            console.log(`✅ Applied ${materials[currentIndex]} material`);
             
             currentIndex = (currentIndex + 1) % materials.length;
             
-            // Complete after full cycle (4 materials)
             if (currentIndex === 0) {
                 this.stopMaterialAnimation();
-                console.log('✅ Material animation complete');
                 this.uiManager.showNotification('Material animation complete', 'success');
             }
-        }, 2000); // 2 seconds between each material change
+        }, 2000);
     }
     
     stopMaterialAnimation() {
         if (this.materialAnimationInterval) {
             clearInterval(this.materialAnimationInterval);
             this.materialAnimationInterval = null;
-            console.log('⏹️ Material animation stopped');
         }
     }
 
@@ -441,15 +390,9 @@ class TallerApp {
         // Reset camera position
         this.cameraManager.resetCamera();
         this.controls.reset();
-        
-        // Stop animations
         this.animationManager.stopAllAnimations();
-        this.stopMaterialAnimation(); // Also stop material animation
-        
-        // Reset lighting
+        this.stopMaterialAnimation();
         this.lightingManager.applyLightingPreset('sunset');
-        
-        console.log('🔄 Scene reset');
     }
 
     showError(message) {
@@ -480,6 +423,10 @@ class TallerApp {
         // Update animations
         TWEEN.update();
         this.animationManager?.update();
+        
+        // Update procedural geometry animations (Point 2)
+        const deltaTime = 16; // Approximate 60fps
+        this.proceduralGeometryManager?.update(deltaTime);
         
         // Update lighting if needed
         this.lightingManager?.update();

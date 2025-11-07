@@ -34,11 +34,35 @@ class UIManager {
         document.getElementById('toggle-wireframe')?.addEventListener('click', () => this.app.sceneManager.toggleWireframe());
         document.getElementById('toggle-helpers')?.addEventListener('click', () => this.app.sceneManager.toggleHelpers());
         document.getElementById('reset-scene')?.addEventListener('click', () => this.app.resetScene());
+        
+        // Procedural Geometry Controls
+        document.getElementById('procedural-grid')?.addEventListener('click', () => this.app.proceduralGeometryManager?.generateWaveGrid());
+        document.getElementById('procedural-spiral')?.addEventListener('click', () => this.app.proceduralGeometryManager?.generateHelixSpiral());
+        document.getElementById('procedural-fractal')?.addEventListener('click', () => this.app.proceduralGeometryManager?.generateSierpinskiPyramid());
+        document.getElementById('procedural-knot')?.addEventListener('click', () => this.app.proceduralGeometryManager?.generateTorusKnot());
+        document.getElementById('procedural-animate')?.addEventListener('click', () => {
+            if (this.app.proceduralGeometryManager?.isAnimating) {
+                this.app.proceduralGeometryManager.stopAnimation();
+                document.getElementById('procedural-animate').textContent = '▶️ Animar';
+            } else {
+                this.app.proceduralGeometryManager?.startAnimation();
+                document.getElementById('procedural-animate').textContent = '⏸️ Pausar';
+            }
+        });
+        document.getElementById('procedural-clear')?.addEventListener('click', () => {
+            this.app.proceduralGeometryManager?.clearProceduralGeometry();
+            this.showNotification('🗑️ Geometría procedural limpiada');
+        });
+        
         window.addEventListener('keydown', (e) => {
             if (e.key === 'c') { this.app.cameraManager.switchCamera(); this.app.controls.object = this.app.cameraManager.activeCamera; }
             else if (e.key === 'l') { const p = ['day', 'sunset', 'night']; const i = (p.indexOf(this.app.lightingManager.currentPreset || 'day') + 1) % p.length; this.app.lightingManager.applyLightingPreset(p[i]); }
             else if (e.key === 'm') this.cycleMaterials();
             else if (e.key === 'p') this.app.colorAnalyzer.printAnalysis();
+            else if (e.key === 'g') this.app.proceduralGeometryManager?.generateWaveGrid();
+            else if (e.key === 's') this.app.proceduralGeometryManager?.generateHelixSpiral();
+            else if (e.key === 'f') this.app.proceduralGeometryManager?.generateSierpinskiPyramid();
+            else if (e.key === 'k') this.app.proceduralGeometryManager?.generateTorusKnot();
         });
     }
     
@@ -49,21 +73,15 @@ class UIManager {
     }
     
     showColorPalette() {
-        console.log('🎨 showColorPalette called');
-        
-        // Verify ColorAnalyzer exists
         if (!this.app.colorAnalyzer) {
-            console.error('❌ ColorAnalyzer not initialized');
             this.showNotification('Error: ColorAnalyzer no inicializado', 'error');
             return;
         }
         
         try {
             const d = this.app.colorAnalyzer.exportAnalysis();
-            console.log('📊 Palette data:', d);
             
             if (!d || !d.palette) {
-                console.error('❌ Invalid palette data');
                 this.showNotification('Error: Datos de paleta inválidos', 'error');
                 return;
             }
@@ -71,15 +89,8 @@ class UIManager {
             let h = '<h3>Paleta RGB/HSV</h3><table style="width:100%;border-collapse:collapse"><thead><tr style="background:#333"><th>Color</th><th>Nombre</th><th>RGB</th><th>HEX</th><th>HSV</th></tr></thead><tbody>';
             
             for (const [n, c] of Object.entries(d.palette)) {
-                console.log(`Processing palette color: ${n}`, c);
+                if (!c) continue;
                 
-                // Validate color structure
-                if (!c) {
-                    console.warn(`⚠️ Color ${n} is null/undefined`);
-                    continue;
-                }
-                
-                // Safe access with defaults
                 const hex = c.hex || '#000000';
                 const rgbR = c.rgb?.r !== undefined ? c.rgb.r : 0;
                 const rgbG = c.rgb?.g !== undefined ? c.rgb.g : 0;
@@ -92,34 +103,23 @@ class UIManager {
             }
             
             h += '</tbody></table>';
-            
-            console.log('✅ Palette modal HTML generated');
             this.showModal('Paleta RGB/HSV', h);
             
         } catch (error) {
-            console.error('❌ Error in showColorPalette:', error);
             this.showNotification('Error al mostrar paleta: ' + error.message, 'error');
         }
     }
     
     showCIELABAnalysis() {
-        console.log('🔬 showCIELABAnalysis called');
-        
-        // Verify ColorAnalyzer exists
         if (!this.app.colorAnalyzer) {
-            console.error('❌ ColorAnalyzer not initialized');
             this.showNotification('Error: ColorAnalyzer no inicializado', 'error');
             return;
         }
         
-        console.log('✅ ColorAnalyzer exists');
-        
         try {
             const d = this.app.colorAnalyzer.exportAnalysis();
-            console.log('📊 Analysis data:', d);
             
             if (!d || !d.palette || !d.contrasts) {
-                console.error('❌ Invalid analysis data structure');
                 this.showNotification('Error: Datos de análisis inválidos', 'error');
                 return;
             }
@@ -127,13 +127,7 @@ class UIManager {
             let h = '<h3>Análisis CIELAB</h3><table style="width:100%;border-collapse:collapse"><thead><tr style="background:#333"><th>Color</th><th>L*</th><th>a*</th><th>b*</th></tr></thead><tbody>';
             
             for (const [n, c] of Object.entries(d.palette)) {
-                console.log(`Processing color: ${n}`, c);
-                
-                // Validate color data structure
-                if (!c || !c.cielab) {
-                    console.warn(`⚠️ Color ${n} has invalid structure:`, c);
-                    continue;
-                }
+                if (!c || !c.cielab) continue;
                 
                 const l = c.cielab.l !== undefined ? c.cielab.l : 0;
                 const a = c.cielab.a !== undefined ? c.cielab.a : 0;
@@ -156,12 +150,9 @@ class UIManager {
             }
             
             h += '</tbody></table>';
-            
-            console.log('✅ Modal HTML generated, showing modal');
             this.showModal('Análisis CIELAB', h);
             
         } catch (error) {
-            console.error('❌ Error in showCIELABAnalysis:', error);
             this.showNotification('Error al generar análisis CIELAB: ' + error.message, 'error');
         }
     }

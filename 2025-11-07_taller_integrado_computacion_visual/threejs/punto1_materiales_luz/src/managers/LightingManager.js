@@ -32,19 +32,12 @@ class LightingManager {
     }
 
     setupDefaultLighting() {
-        console.log('💡 Setting up default lighting...');
         this.applyLightingPreset('sunset');
     }
 
     applyLightingPreset(presetName) {
-        if (!this.presets[presetName]) {
-            console.error('❌ Unknown lighting preset:', presetName);
-            return;
-        }
-
-        console.log(`🌅 Applying lighting preset: ${presetName}`);
+        if (!this.presets[presetName]) return;
         
-        // Clear existing lights
         this.clearLights();
         
         const preset = this.presets[presetName];
@@ -107,15 +100,12 @@ class LightingManager {
 
     addEnvironment(name, texture) {
         this.environments.set(name, texture);
-        console.log(`🌍 Environment '${name}' added`);
     }
 
     setEnvironment(envName) {
-        // Always prefer sunset environment if available
         let environment = this.environments.get('sunset');
         let actualEnvName = 'sunset';
         
-        // Fallback to requested environment if sunset not available
         if (!environment && envName) {
             environment = this.environments.get(envName);
             actualEnvName = envName;
@@ -125,12 +115,9 @@ class LightingManager {
             this.scene.environment = environment;
             this.scene.background = environment;
             this.currentEnvironment = actualEnvName;
-            console.log(`🌍 Environment set to: ${actualEnvName}`);
         } else {
-            // Fallback to color background
             const bgColor = actualEnvName === 'sunset' ? 0x4a3728 : 0x87ceeb;
             this.scene.background = new THREE.Color(bgColor);
-            console.log(`🌍 Using fallback color background for: ${actualEnvName}`);
         }
     }
 
@@ -175,20 +162,17 @@ class LightingManager {
 
     // Animation helpers
     animateLights() {
-        console.log('✨ Starting light animation...');
-        
         const keyLight = this.lights.get('key');
         if (keyLight) {
             const originalPos = keyLight.position.clone();
             
-            // Create circular motion for key light
             let time = 0;
             const animate = () => {
                 time += 0.02;
                 keyLight.position.x = originalPos.x + Math.sin(time) * 5;
                 keyLight.position.z = originalPos.z + Math.cos(time) * 5;
                 
-                if (time < Math.PI * 4) { // 2 full rotations
+                if (time < Math.PI * 4) {
                     requestAnimationFrame(animate);
                 } else {
                     keyLight.position.copy(originalPos);

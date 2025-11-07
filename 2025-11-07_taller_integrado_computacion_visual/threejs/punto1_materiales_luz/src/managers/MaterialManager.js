@@ -73,8 +73,6 @@ class MaterialManager {
     }
 
     async loadPBRTextures(basePath, materialName) {
-        console.log(`🎨 Loading PBR textures for: ${materialName}`);
-        
         const texturePromises = {
             color: this.loadTexture(`${basePath}/${materialName}_Color.jpg`),
             normal: this.loadTexture(`${basePath}/${materialName}_NormalGL.jpg`),
@@ -87,22 +85,17 @@ class MaterialManager {
         try {
             const textures = {};
             
-            // Load textures with error handling
             for (const [key, promise] of Object.entries(texturePromises)) {
                 try {
                     textures[key] = await promise;
-                    console.log(`✅ Loaded ${key} texture for ${materialName}`);
                 } catch (error) {
-                    console.log(`⚠️ Could not load ${key} texture for ${materialName}`);
                     textures[key] = null;
                 }
             }
             
-            // Create material with loaded textures
             return this.createPBRMaterial(materialName, textures);
             
         } catch (error) {
-            console.error(`❌ Error loading textures for ${materialName}:`, error);
             return this.createFallbackMaterial(materialName);
         }
     }
@@ -150,8 +143,6 @@ class MaterialManager {
         });
         
         this.materials.set(name.toLowerCase(), material);
-        console.log(`✅ Created PBR material: ${name}`);
-        
         return material;
     }
 
@@ -277,14 +268,10 @@ class MaterialManager {
 
     applyMaterialToObject(object, materialName) {
         const material = this.getMaterial(materialName);
-        if (!material) {
-            console.warn(`Material '${materialName}' not found`);
-            return;
-        }
+        if (!material) return;
         
         if (object.isMesh) {
             object.material = material;
-            console.log(`Applied material '${materialName}' to ${object.name || 'unnamed object'}`);
         }
     }
 

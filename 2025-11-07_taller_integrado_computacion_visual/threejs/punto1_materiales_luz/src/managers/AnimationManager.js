@@ -11,22 +11,17 @@ class AnimationManager {
 
     // Camera animations
     startCameraAnimation(camera) {
-        console.log('🎬 Starting camera animation...');
-        
-        // Stop any existing camera animation
         this.stopAnimation('camera');
         
-        // Define camera path points
         const points = [
-            new THREE.Vector3(-4, 2, 4),   // Start position
-            new THREE.Vector3(4, 3, 2),    // Right side
-            new THREE.Vector3(0, 5, -5),   // Back high
-            new THREE.Vector3(-2, 1, 3),   // Left close
-            new THREE.Vector3(-4, 2, 4)    // Back to start
+            new THREE.Vector3(-4, 2, 4),
+            new THREE.Vector3(4, 3, 2),
+            new THREE.Vector3(0, 5, -5),
+            new THREE.Vector3(-2, 1, 3),
+            new THREE.Vector3(-4, 2, 4)
         ];
         
-        // Create smooth camera path
-        this.createCameraPath(camera, points, 8000); // 8 seconds
+        this.createCameraPath(camera, points, 8000);
     }
 
     createCameraPath(camera, points, duration) {
@@ -64,8 +59,6 @@ class AnimationManager {
 
     // Object animations
     startObjectAnimations() {
-        console.log('🎭 Starting object animations...');
-        
         this.scene.traverse((child) => {
             if (child.isMesh && child.name) {
                 this.animateObject(child);
@@ -150,8 +143,6 @@ class AnimationManager {
 
     // Light animations
     startLightAnimations() {
-        console.log('💡 Starting light animations...');
-        
         this.scene.traverse((child) => {
             if (child.isLight && child.type !== 'AmbientLight') {
                 this.animateLight(child);
@@ -195,14 +186,11 @@ class AnimationManager {
     playGLTFAnimations(gltf) {
         if (!gltf.animations || gltf.animations.length === 0) return;
         
-        console.log(`🎞️ Playing ${gltf.animations.length} GLTF animations`);
-        
         const mixer = new THREE.AnimationMixer(gltf.scene);
         
-        gltf.animations.forEach((clip, index) => {
+        gltf.animations.forEach((clip) => {
             const action = mixer.clipAction(clip);
             action.play();
-            console.log(`▶️ Playing animation: ${clip.name || index}`);
         });
         
         this.animationMixers.push(mixer);
@@ -222,14 +210,10 @@ class AnimationManager {
     }
 
     stopAllAnimations() {
-        console.log('⏹️ Stopping all animations...');
-        
-        // Stop TWEEN animations
         this.activeAnimations.forEach((animation, name) => {
             this.stopAnimation(name);
         });
         
-        // Stop GLTF animations
         this.animationMixers.forEach(mixer => {
             mixer.stopAllActions();
         });

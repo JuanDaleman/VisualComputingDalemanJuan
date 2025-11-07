@@ -45,26 +45,19 @@ class CameraManager {
     }
 
     switchCamera() {
-        // Store current camera transform
         const currentPos = this.activeCamera.position.clone();
         const currentTarget = new THREE.Vector3();
         
-        // Switch camera type
         if (this.cameraType === 'perspective') {
             this.activeCamera = this.orthographicCamera;
             this.cameraType = 'orthographic';
-            console.log('📷 Switched to Orthographic Camera');
         } else {
             this.activeCamera = this.perspectiveCamera;
             this.cameraType = 'perspective';
-            console.log('📷 Switched to Perspective Camera');
         }
         
-        // Maintain position and orientation
         this.activeCamera.position.copy(currentPos);
         this.activeCamera.lookAt(0, 0, 0);
-        
-        // Update UI
         this.updateCameraUI();
         
         return this.activeCamera;
