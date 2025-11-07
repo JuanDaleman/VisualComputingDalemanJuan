@@ -256,19 +256,56 @@ server: {
 }
 ```
 
-## 📸 Evidencias Requeridas
+## 📸 Evidencias Visuales
 
-Para cumplir con los requisitos del taller, debes generar:
+### Punto 1: Materiales, Luz y Color
 
-- ✅ **6 capturas** de escenas con diferentes materiales y luces
-- ✅ **6 GIFs** mostrando:
-  - Cambio de cámara (perspectiva ↔ ortográfica)
-  - Transición entre presets de luz
-  - Animación de materiales
-  - Variación de propiedades PBR (roughness, metalness)
-  - Recorrido de cámara
-  - Análisis de color en tiempo real
-- ✅ **1 video** (30-60s) de la experiencia completa
+#### Capturas de Pantalla
+
+<div align="center">
+
+| Material Metálico | Material Concreto | Material Madera |
+|-------------------|-------------------|-----------------|
+| ![Metal](../../../renders/punto1/images/punto_uno_metal.png) | ![Concreto](../../../renders/punto1/images/punto_uno_concreto.png) | ![Madera](../../../renders/punto1/images/punto_uno_madera.png) |
+| Texturas PBR con metalness y roughness | Ambient Occlusion y rugosidad | Normal mapping y color natural |
+
+</div>
+
+#### Demostración Animada
+
+<div align="center">
+
+![Punto 1 - Materiales y Luz](../../../renders/punto1/gif_punto_uno.gif)
+
+*Demostración de cambios de materiales PBR, presets de iluminación y análisis cromático CIELAB*
+
+</div>
+
+#### Video Completo
+
+📹 **[Ver escena completa - Punto 1](../../../renders/punto1/punto_uno_escena.mp4)**
+
+*Video de 30-60 segundos mostrando la experiencia interactiva completa con materiales PBR, iluminación dinámica, cambios de cámara y análisis de color.*
+
+---
+
+### Punto 2: Geometría Procedural
+
+#### Demostración Animada
+
+<div align="center">
+
+![Punto 2 - Geometría Procedural](../../../renders/punto2/gif_punto_dos.gif)
+
+*Demostración de los 4 algoritmos procedurales: Wave Grid, Helix Spiral, Sierpinski Pyramid y Torus Knot*
+
+</div>
+
+#### Video Completo
+
+📹 **[Ver escena completa - Punto 2](../../../renders/punto2/punto_dos_escena.mp4)**
+
+*Video mostrando la generación algorítmica de geometría, modificación dinámica de vértices y comparación con modelado manual.*
 
 ## 📚 Documentación Adicional
 
