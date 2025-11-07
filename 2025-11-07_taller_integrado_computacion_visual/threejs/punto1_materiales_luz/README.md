@@ -266,7 +266,7 @@ server: {
 
 | Material Metálico | Material Concreto | Material Madera |
 |-------------------|-------------------|-----------------|
-| ![Metal](../../../renders/punto1/images/punto_uno_metal.png) | ![Concreto](../../../renders/punto1/images/punto_uno_concreto.png) | ![Madera](../../../renders/punto1/images/punto_uno_madera.png) |
+| ![Metal](../../renders/punto1/images/punto_uno_metal.png) | ![Concreto](../../renders/punto1/images/punto_uno_concreto.png) | ![Madera](../../renders/punto1/images/punto_uno_madera.png) |
 | Texturas PBR con metalness y roughness | Ambient Occlusion y rugosidad | Normal mapping y color natural |
 
 </div>
@@ -275,7 +275,7 @@ server: {
 
 <div align="center">
 
-![Punto 1 - Materiales y Luz](../../../renders/punto1/gif_punto_uno.gif)
+![Punto 1 - Materiales y Luz](../../renders/punto1/gif_punto_uno.gif)
 
 *Demostración de cambios de materiales PBR, presets de iluminación y análisis cromático CIELAB*
 
@@ -283,7 +283,7 @@ server: {
 
 #### Video Completo
 
-📹 **[Ver escena completa - Punto 1](../../../renders/punto1/punto_uno_escena.mp4)**
+📹 **[Ver escena completa - Punto 1](../../renders/punto1/punto_uno_escena.mp4)**
 
 *Video de 30-60 segundos mostrando la experiencia interactiva completa con materiales PBR, iluminación dinámica, cambios de cámara y análisis de color.*
 
@@ -295,7 +295,7 @@ server: {
 
 <div align="center">
 
-![Punto 2 - Geometría Procedural](../../../renders/punto2/gif_punto_dos.gif)
+![Punto 2 - Geometría Procedural](../../renders/punto2/gif_punto_dos.gif)
 
 *Demostración de los 4 algoritmos procedurales: Wave Grid, Helix Spiral, Sierpinski Pyramid y Torus Knot*
 
@@ -303,7 +303,7 @@ server: {
 
 #### Video Completo
 
-📹 **[Ver escena completa - Punto 2](../../../renders/punto2/punto_dos_escena.mp4)**
+📹 **[Ver escena completa - Punto 2](../../renders/punto2/punto_dos_escena.mp4)**
 
 *Video mostrando la generación algorítmica de geometría, modificación dinámica de vértices y comparación con modelado manual.*
 
