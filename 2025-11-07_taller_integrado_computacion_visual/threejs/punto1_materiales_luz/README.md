@@ -1,14 +1,21 @@
-# Taller 3 - Punto 1: Materiales, Luz y Color (PBR y Modelos Cromáticos)
+# Taller 3 - Puntos 1 y 2: Materiales, Luz, Color y Geometría Procedural
 
 ## 📋 Descripción
 
-Este proyecto implementa el Punto 1 del Taller Integrado de Computación Visual, enfocándose en:
+Este proyecto implementa los Puntos 1 y 2 del Taller Integrado de Computación Visual:
 
+### Punto 1: Materiales, Luz y Color (PBR y Modelos Cromáticos)
 - ✅ **Texturas PBR completas**: albedo, roughness, metalness, normal map
 - ✅ **Iluminación múltiple**: key light, fill light, rim light, HDRI
 - ✅ **Cámaras**: alternancia perspectiva/ortográfica
 - ✅ **Paleta cromática**: análisis RGB/HSV con justificación de contraste en CIELAB
 - ✅ **Animaciones**: variaciones de luz y material
+
+### Punto 2: Modelado Procedural desde Código
+- ✅ **Geometría algorítmica**: rejillas, espirales, fractales
+- ✅ **Bucles y recursión**: patrones espaciales matemáticos
+- ✅ **Modificación dinámica**: transformaciones de vértices en tiempo real
+- ✅ **Comparativa**: modelado código vs manual
 
 ## 🚀 Setup
 
@@ -44,14 +51,15 @@ The project will open automatically at `http://localhost:3001`
 punto1_materiales_luz/
 ├── src/
 │   ├── main.js                    # Main application
-│   ├── ColorAnalyzer.js           # CIELAB color analysis
+│   ├── ColorAnalyzer.js           # CIELAB color analysis (Point 1)
 │   └── managers/
 │       ├── CameraManager.js       # Camera controls
 │       ├── LightingManager.js     # Lighting and HDRI
 │       ├── MaterialManager.js     # PBR materials
 │       ├── AnimationManager.js    # Animations
 │       ├── SceneManager.js        # Scene management
-│       └── UIManager.js           # User interface
+│       ├── UIManager.js           # User interface
+│       └── ProceduralGeometryManager.js  # Procedural modeling (Point 2)
 ├── public/
 │   ├── models/                    # GLB models (not in repo)
 │   ├── textures/                  # PBR textures (not in repo)
@@ -71,6 +79,10 @@ punto1_materiales_luz/
 - **A**: Iniciar animaciones
 - **R**: Reset de escena
 - **P**: Mostrar análisis de color en consola
+- **G**: Generar Wave Grid (rejilla ondulada)
+- **S**: Generar Helix Spiral (espiral 3D)
+- **F**: Generar Sierpinski Fractal (pirámide recursiva)
+- **K**: Generar Torus Knot (nudo toroidal)
 
 ### Mouse
 
@@ -83,6 +95,13 @@ punto1_materiales_luz/
 - **🎥 Cámaras**: Botones para alternar vistas
 - **💡 Iluminación**: Presets de día, atardecer y noche
 - **🎨 Materiales PBR**: Cambio de materiales
+- **🔷 Geometría Procedural**: 
+  - 🌊 Wave Grid - Rejilla ondulada
+  - 🌀 Helix Spiral - Espiral 3D
+  - 🔺 Sierpinski - Fractal recursivo
+  - 🎗️ Torus Knot - Nudo toroidal
+  - ▶️ Animar - Modificación dinámica de vértices
+  - 🗑️ Limpiar - Remover geometría procedural
 - **🎬 Animaciones**: Controles de animación
 - **🔬 Análisis Cromático**: Ver paleta y análisis CIELAB
 - **📊 Debug**: Wireframe, helpers y reset
@@ -253,7 +272,42 @@ Para cumplir con los requisitos del taller, debes generar:
 
 ## 📚 Documentación Adicional
 
-Ver `/docs/color_analysis.md` para el análisis cromático completo generado automáticamente.
+- `/docs/color_analysis.md` - Análisis cromático completo CIELAB
+- `/docs/procedural_modeling.md` - Comparativa modelado manual vs procedural
+
+## 🔷 Geometría Procedural (Punto 2)
+
+El sistema de modelado procedural implementa **4 algoritmos matemáticos**:
+
+### 1. Wave Grid (Rejilla Ondulada)
+- **Técnica**: Bucles anidados + funciones trigonométricas
+- **Parámetros**: width, height, segments, amplitude, frequency
+- **Característica**: Modificación dinámica de vértices en tiempo real
+- **Uso**: Superficies de agua, terrenos ondulados
+
+### 2. Helix Spiral (Espiral 3D)
+- **Técnica**: Bucle simple + ecuaciones paramétricas
+- **Parámetros**: radius, height, turns, tubeRadius
+- **Característica**: Movimiento circular + progresión vertical
+- **Uso**: ADN, resortes, escaleras caracol
+
+### 3. Sierpinski Pyramid (Fractal Recursivo)
+- **Técnica**: Recursión + división fractal
+- **Parámetros**: size, recursion level (1-4)
+- **Característica**: Auto-similitud a diferentes escalas
+- **Uso**: Visualización de fractales, arte generativo
+- **Complejidad**: 4^level tetraedros
+
+### 4. Torus Knot (Nudo Toroidal)
+- **Técnica**: Ecuaciones paramétricas complejas
+- **Parámetros**: p, q (parámetros del nudo), radius, tube
+- **Característica**: Topología compleja en 3D
+- **Uso**: Teoría de nudos, joyería paramétrica
+
+### Ver documentación completa:
+```bash
+cat docs/procedural_modeling.md
+```
 
 ## 👨‍💻 Autor
 
