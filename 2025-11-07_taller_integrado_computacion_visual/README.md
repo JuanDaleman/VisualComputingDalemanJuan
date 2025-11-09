@@ -73,14 +73,66 @@ Construir un ecosistema visual donde **color, forma, geometría y luz** dialogue
 
 ---
 
-### 🚧 Puntos 4-8, 10: Planificados
+### 🚧 Puntos 4-5, 10: Planificados
 
 - **Punto 4**: Texturizado dinámico y partículas
 - **Punto 5**: Visualización de imágenes y video 360°
-- **Punto 6**: Entrada e interacción (UI, input, colisiones)
-- **Punto 7**: Gestos con cámara web (MediaPipe Hands)
-- **Punto 8**: Reconocimiento de voz y control por comandos
 - **Punto 10**: Simulación BCI (EEG sintético)
+
+---
+
+### ✅ Punto 6: UI, Entrada e Interacción
+
+**Estado**: Completado ✅
+
+**Implementación**:
+- ✅ **Interfaz de usuario HTML**: Botón para cambiar color aleatorio y slider para velocidad de rotación
+- ✅ **Entrada por teclado**: WASD para movimiento del cubo en el plano XZ
+- ✅ **Entrada táctil**: touchstart cambia el color del cubo a magenta
+- ✅ **Detección de colisiones**: Box3.intersectsBox() para zona de activación (trigger zone)
+- ✅ **Retroalimentación visual**: Zona de activación cambia de rojo a verde al colisionar
+- ✅ **Control de cámara**: OrbitControls para navegación en la escena
+
+**Tecnologías**: Three.js, WebGL, OrbitControls, Box3 (collision detection)
+
+---
+
+### ✅ Punto 7: Gestos con Cámara Web (MediaPipe Hands)
+
+**Estado**: Completado ✅
+
+**Implementación**:
+- ✅ **Detección de manos en tiempo real**: MediaPipe Hands con 21 landmarks por mano
+- ✅ **Reconocimiento de gestos**: Conteo de dedos extendidos (0=piedra, 5=papel, índice+medio=tijeras)
+- ✅ **Juego de piedra, papel o tijera**: El algoritmo analiza la imagen del sujeto por la cámara, más específicamente su mano, determina que jugó: piedra, papel o tijera y emite un resultado de si ganó o no a la máquina
+- ✅ **Detección de estabilidad**: Requiere mantener el gesto 8 frames consecutivos para validar jugada
+- ✅ **Handedness detection**: Diferenciación entre mano izquierda y derecha para conteo correcto del pulgar
+- ✅ **Visualización en vivo**: HUD con instrucciones, estado de dedos, distancias entre landmarks y resultado del juego
+- ✅ **Máquina de estados**: idle → detecting → result con temporizador de resultado (2 segundos)
+
+**Tecnologías**: MediaPipe Hands, OpenCV (cv2), NumPy, Python
+
+**Documentación**: Ver [README detallado](./python/punto7_gestos_manos/README.md)
+
+---
+
+### ✅ Punto 8: Reconocimiento de Voz y Control por Comandos
+
+**Estado**: Completado ✅
+
+**Implementación**:
+- ✅ **Reconocimiento de voz en español**: SpeechRecognition para comandos de voz (Google Speech Recognition API)
+- ✅ **Comunicación OSC bidireccional**: Python (puerto 8000) ↔ Processing (puerto 8001)
+- ✅ **Control de visualización**: Por medio de reconocimiento de voz se identifica la figura que se quiera que se represente y se muestra en pantalla, esta se le puede cambiar el color o la forma (agrandar o disminuir)
+- ✅ **Comandos de color**: "rojo", "verde", "azul" envían mensajes `/visual/color`
+- ✅ **Comandos de forma**: "círculo", "cuadrado", "triángulo" envían mensajes `/visual/shape`
+- ✅ **Comandos de transformación**: "girar", "agrandar", "limpiar", "explosión"
+- ✅ **Retroalimentación TTS**: pyttsx3 para confirmación de voz en español
+- ✅ **Visualización Processing**: oscP5 para recepción de mensajes y generación de efectos visuales
+
+**Tecnologías**: Python (SpeechRecognition, python-osc, pyttsx3), Processing (oscP5), OSC Protocol
+
+**Documentación**: Ver [README detallado](./python/punto8_voz_processing/README.md)
 
 ---
 
@@ -189,6 +241,14 @@ Sistema: Windows 10/11, Linux, macOS
 │   │   ├── index.html
 │   │   ├── package.json
 │   │   └── vite.config.js
+│   ├── punto6_ui_input/            # Punto 6: UI, Entrada e Interacción
+│   │   ├── src/
+│   │   │   ├── main.js                      # UI, keyboard, touch, collision
+│   │   │   ├── counter.js
+│   │   │   └── style.css
+│   │   ├── public/
+│   │   ├── index.html
+│   │   └── package.json
 │   ├── punto9_voz_gestos/          # Punto 9: Interfaces Multimodales
 │   │   ├── src/
 │   │   │   ├── main.js                      # Entry point
@@ -203,6 +263,23 @@ Sistema: Windows 10/11, Linux, macOS
 │       │   └── style.css
 │       ├── index.html
 │       └── package.json
+├── python/                      # Implementaciones Python
+│   ├── punto7_gestos_manos/         # Punto 7: MediaPipe Hands RPS
+│   │   ├── src/
+│   │   │   └── p7.py                        # Rock-Paper-Scissors game
+│   │   ├── README.md                        # Documentación detallada
+│   │   ├── requirements.txt                 # Dependencies (mediapipe, opencv-python, numpy)
+│   │   └── .gitignore
+│   └── punto8_voz_processing/       # Punto 8: Voice + OSC
+│       ├── src/
+│       │   └── p8.py                        # Voice recognition + OSC client
+│       ├── README.md                        # Documentación OSC
+│       ├── requirements.txt                 # Dependencies (SpeechRecognition, python-osc, pyttsx3, etc.)
+│       └── .gitignore
+├── processing/                  # Sketches de Processing
+│   └── punto8/                      # Punto 8: Visualización OSC
+│       └── sketch/
+│           └── sketch.pde                   # oscP5 receiver + visual effects
 ├── glb_models/                  # Modelos 3D compartidos
 │   ├── ScaledMclaren.glb
 │   ├── ScaledCity.glb
@@ -233,6 +310,11 @@ Sistema: Windows 10/11, Linux, macOS
 │   │   │   └── wireframe.png
 │   │   ├── gif_punto_tres.gif   # Demostración animada
 │   │   └── punto_tres_escena.mp4 # Video completo
+│   ├── punto6/                      # Punto 6: UI e Interacción (video disponible)
+│   ├── punto7/                      # Punto 7: Gestos con MediaPipe
+│   │   └── punto_siete_gestos_manos.mp4
+│   ├── punto8/                      # Punto 8: Reconocimiento de Voz
+│   │   └── punto_ocho_voz_processing.mp4
 │   ├── punto9/
 │   │   └── punto_nueve_voz_gestos.gif  # Demostración multimodal
 │   └── punto11/
@@ -248,13 +330,15 @@ Sistema: Windows 10/11, Linux, macOS
 
 ### Instalación
 
+#### Proyectos Three.js (Puntos 1-3, 6, 9, 11)
+
 ```bash
 # 1. Clonar repositorio
 git clone https://github.com/JuanDaleman/VisualComputingDalemanJuan.git
 cd VisualComputingDalemanJuan/2025-11-07_taller_integrado_computacion_visual
 
-# 2. Ir al proyecto Three.js
-cd threejs/punto1_2_3_materiales_luz
+# 2. Ir al proyecto Three.js deseado
+cd threejs/punto1_2_3_materiales_luz  # O punto6_ui_input, punto9_voz_gestos, punto11_proyecciones
 
 # 3. Instalar dependencias
 npm install
@@ -263,9 +347,49 @@ npm install
 npm run dev
 ```
 
-El proyecto se abrirá automáticamente en `http://localhost:3001`
+El proyecto se abrirá automáticamente en `http://localhost:3001` (o puerto disponible)
 
-### Alternativa: Sin Symlinks
+#### Proyectos Python (Puntos 7, 8)
+
+```bash
+# 1. Navegar al proyecto Python
+cd python/punto7_gestos_manos  # O punto8_voz_processing
+
+# 2. Crear entorno virtual (recomendado)
+python -m venv venv
+source venv/bin/activate  # En Windows: venv\Scripts\activate
+
+# 3. Instalar dependencias
+pip install -r requirements.txt
+
+# 4. Ejecutar
+python src/p7.py  # O src/p8.py
+```
+
+**Nota Punto 7**: Requiere cámara web conectada (CAMERA_INDEX=0 por defecto)
+
+**Nota Punto 8**: Requiere micrófono y Processing ejecutándose simultáneamente
+
+#### Proyecto Processing (Punto 8 - Visualización)
+
+```bash
+# 1. Navegar al sketch
+cd processing/punto8/sketch
+
+# 2. Abrir en Processing IDE
+processing-java --sketch=$(pwd) --run
+
+# O abrir sketch.pde manualmente en Processing IDE
+
+# 3. Instalar librería oscP5 (Tools → Manage Libraries → Search "oscP5")
+```
+
+**Flujo completo Punto 8**:
+1. Iniciar Processing sketch (puerto 8000)
+2. Iniciar script Python p8.py (puerto 8000 envío, 8001 recepción)
+3. Hablar comandos al micrófono ("rojo", "círculo", "girar", etc.)
+
+### Alternativa: Sin Symlinks (Solo Puntos 1-3)
 
 Si tienes problemas con los symlinks, copia los assets directamente:
 
@@ -745,7 +869,261 @@ document.getElementById("btnOrtho").onclick = () => {
 };
 ```
 
-### 7. Sistema de Iluminación de 3 Puntos
+### 7. UI, Input y Detección de Colisiones (Punto 6)
+
+```javascript
+// main.js - Sistema de entrada multimodal
+const movement = { x: 0, z: 0 };
+let rotationSpeed = 0.01;
+
+// UI Interaction - Botón y Slider
+document.getElementById("btnAction").addEventListener("click", () => {
+  cube.material.color.set(Math.random() * 0xffffff); // Color aleatorio
+});
+
+document.getElementById("speedSlider").addEventListener("input", (e) => {
+  rotationSpeed = parseFloat(e.target.value); // Rango: 0 a 0.1
+});
+
+// Keyboard Input - WASD
+window.addEventListener("keydown", (e) => {
+  if (e.key === "w") movement.z = -0.05;
+  if (e.key === "s") movement.z = 0.05;
+  if (e.key === "a") movement.x = -0.05;
+  if (e.key === "d") movement.x = 0.05;
+});
+
+window.addEventListener("keyup", (e) => {
+  if (e.key === "w" || e.key === "s") movement.z = 0;
+  if (e.key === "a" || e.key === "d") movement.x = 0;
+});
+
+// Touch Input
+window.addEventListener("touchstart", () => {
+  cube.material.color.set(0xff00ff); // Magenta
+});
+
+// Collision Detection - Box3
+function checkCollision() {
+  const cubeBox = new THREE.Box3().setFromObject(cube);
+  const triggerBox = new THREE.Box3().setFromObject(triggerZone);
+  
+  if (cubeBox.intersectsBox(triggerBox)) {
+    triggerZone.material.color.set(0x00ff00); // Verde
+  } else {
+    triggerZone.material.color.set(0xff0000); // Rojo
+  }
+}
+
+// Animation Loop
+function animate() {
+  cube.rotation.y += rotationSpeed;
+  cube.position.x += movement.x;
+  cube.position.z += movement.z;
+  checkCollision();
+  renderer.render(scene, camera);
+}
+```
+
+### 8. Reconocimiento de Gestos con MediaPipe (Punto 7)
+
+```python
+# p7.py - Rock-Paper-Scissors con MediaPipe Hands
+import mediapipe as mp
+import cv2
+import numpy as np
+
+# Configuración
+DETECTION_CONFIDENCE = 0.7
+HOLD_FRAMES_REQUIRED = 8  # Estabilidad de gesto
+
+mp_hands = mp.solutions.hands
+hands = mp_hands.Hands(
+    max_num_hands=1,
+    min_detection_confidence=DETECTION_CONFIDENCE,
+    min_tracking_confidence=0.7
+)
+
+def fingers_up(hand_landmarks, img_w, img_h, handedness_label):
+    """Conteo de dedos extendidos (0-5)"""
+    fingers = []
+    
+    # Pulgar: basado en posición X según handedness
+    thumb_tip = hand_landmarks.landmark[4]
+    thumb_ip = hand_landmarks.landmark[3]
+    if handedness_label == "Right":
+        fingers.append(1 if thumb_tip.x < thumb_ip.x else 0)
+    else:
+        fingers.append(1 if thumb_tip.x > thumb_ip.x else 0)
+    
+    # Otros dedos: basado en posición Y
+    for tip_id in [8, 12, 16, 20]:  # Índice, medio, anular, meñique
+        tip = hand_landmarks.landmark[tip_id]
+        pip = hand_landmarks.landmark[tip_id - 2]
+        fingers.append(1 if tip.y < pip.y else 0)
+    
+    return fingers
+
+def recognize_gesture(fingers):
+    """Clasifica gesto: rock, paper, scissors, none"""
+    count = sum(fingers)
+    if count == 0:
+        return "rock"
+    elif count == 5:
+        return "paper"
+    elif fingers[1] == 1 and fingers[2] == 1 and fingers[3] == 0 and fingers[4] == 0:
+        return "scissors"
+    return "none"
+
+# Game loop con estabilidad de 8 frames
+stable_frames = 0
+current_gesture = "none"
+
+while cap.isOpened():
+    ret, frame = cap.read()
+    results = hands.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+    
+    if results.multi_hand_landmarks:
+        hand_landmarks = results.multi_hand_landmarks[0]
+        handedness = results.multi_handedness[0].classification[0].label
+        
+        fingers = fingers_up(hand_landmarks, frame.shape[1], frame.shape[0], handedness)
+        gesture = recognize_gesture(fingers)
+        
+        # Validación de estabilidad
+        if gesture == current_gesture and gesture != "none":
+            stable_frames += 1
+        else:
+            stable_frames = 0
+            current_gesture = gesture
+        
+        if stable_frames >= HOLD_FRAMES_REQUIRED:
+            # Generar jugada de PC y determinar ganador
+            pc_choice = random.choice(['rock', 'paper', 'scissors'])
+            result = rps_result(current_gesture, pc_choice)
+            print(f"Player: {current_gesture}, PC: {pc_choice} → {result}")
+```
+
+### 9. Reconocimiento de Voz + OSC (Punto 8)
+
+```python
+# p8.py - Voice commands → OSC → Processing
+import speech_recognition as sr
+from pythonosc import udp_client, osc_server
+import pyttsx3
+
+# OSC Configuration
+osc_client = udp_client.SimpleUDPClient("127.0.0.1", 8000)  # → Processing
+dispatcher = osc_server.Dispatcher()
+
+# TTS Engine
+tts = pyttsx3.init()
+tts.setProperty('rate', 150)
+
+# Command mappings
+COMMANDS = {
+    "rojo": ("color", 255, 0, 0),
+    "verde": ("color", 0, 255, 0),
+    "azul": ("color", 0, 0, 255),
+    "círculo": ("shape", "circle"),
+    "cuadrado": ("shape", "square"),
+    "triángulo": ("shape", "triangle"),
+    "girar": ("effect", "rotate"),
+    "agrandar": ("effect", "scale"),
+    "limpiar": ("scene", "clear"),
+    "explosión": ("effect", "explosion")
+}
+
+# Voice recognition
+recognizer = sr.Recognizer()
+mic = sr.Microphone()
+
+def send_command(text):
+    """Procesa comando de voz y envía OSC"""
+    text_lower = text.lower()
+    for keyword, action in COMMANDS.items():
+        if keyword in text_lower:
+            if action[0] == "color":
+                osc_client.send_message("/visual/color", list(action[1:4]))
+                tts.say(f"Cambiando color a {keyword}")
+            elif action[0] == "shape":
+                osc_client.send_message("/visual/shape", action[1])
+                tts.say(f"Dibujando {keyword}")
+            elif action[0] == "effect":
+                osc_client.send_message(f"/visual/{action[1]}", True)
+            elif action[0] == "scene":
+                osc_client.send_message(f"/scene/{action[1]}", True)
+            
+            tts.runAndWait()
+            break
+
+# Listener para confirmaciones de Processing
+def confirmation_handler(address, *args):
+    print(f"✅ Processing confirmó: {address}")
+
+dispatcher.map("/processing/*", confirmation_handler)
+
+# Main loop
+with mic as source:
+    recognizer.adjust_for_ambient_noise(source)
+    while True:
+        audio = recognizer.listen(source)
+        try:
+            text = recognizer.recognize_google(audio, language="es-ES")
+            print(f"Comando reconocido: {text}")
+            send_command(text)
+        except sr.UnknownValueError:
+            pass
+```
+
+```processing
+// sketch.pde - Processing OSC receiver
+import oscP5.*;
+import netP5.*;
+
+OscP5 oscP5;
+NetAddress pythonClient;
+
+color currentColor = color(255, 255, 255);
+String currentShape = "circle";
+
+void setup() {
+  size(800, 600);
+  oscP5 = new OscP5(this, 8000); // Listen on port 8000
+  pythonClient = new NetAddress("127.0.0.1", 8001); // Send confirmations
+}
+
+void oscEvent(OscMessage msg) {
+  if (msg.checkAddrPattern("/visual/color")) {
+    currentColor = color(msg.get(0).intValue(), 
+                         msg.get(1).intValue(), 
+                         msg.get(2).intValue());
+    oscP5.send(new OscMessage("/processing/color_changed"), pythonClient);
+  }
+  
+  if (msg.checkAddrPattern("/visual/shape")) {
+    currentShape = msg.get(0).stringValue();
+  }
+  
+  if (msg.checkAddrPattern("/scene/clear")) {
+    background(0);
+    oscP5.send(new OscMessage("/processing/scene_cleared"), pythonClient);
+  }
+}
+
+void draw() {
+  fill(currentColor);
+  switch(currentShape) {
+    case "circle": ellipse(width/2, height/2, 200, 200); break;
+    case "square": rect(width/2 - 100, height/2 - 100, 200, 200); break;
+    case "triangle": triangle(width/2, height/2 - 100, 
+                              width/2 - 100, height/2 + 100,
+                              width/2 + 100, height/2 + 100); break;
+  }
+}
+```
+
+### 10. Sistema de Iluminación de 3 Puntos
 
 ```javascript
 // LightingManager.js - Preset Atardecer
@@ -900,6 +1278,94 @@ applyLightingPreset(preset) {
 - **Sincronización**: Hilos concurrentes para ambas entradas
 - **Retroalimentación**: Status div con estado en tiempo real (🎤 Voz | ✋ Gesto)
 - **Acciones visuales**: Movimiento Y, rotación, cambio de color RGB
+
+---
+
+---
+
+### Punto 6: UI, Entrada e Interacción
+
+**Demostración en video**:
+
+> **Nota**: Por limitaciones de tamaño, la evidencia de Punto 6 está disponible solo en video (no GIF).
+
+**Características demostradas**:
+- **UI HTML**: Botón de acción (color aleatorio) y slider (velocidad de rotación 0-0.1)
+- **Keyboard Input**: WASD para movimiento del cubo en plano XZ
+- **Touch Input**: touchstart cambia color a magenta (0xff00ff)
+- **Collision Detection**: Box3.intersectsBox() activa zona de trigger (rojo → verde)
+- **OrbitControls**: Navegación 3D con mouse
+- **Animation Loop**: Rotación continua + aplicación de movimiento
+
+---
+
+### Punto 7: Gestos con Cámara Web (MediaPipe Hands)
+
+#### Demostración en Video - Punto 7
+
+**Video disponible**: [renders/punto7/punto_siete_gestos_manos.mp4](renders/punto7/punto_siete_gestos_manos.mp4)
+
+> **Nota**: Por limitaciones de tamaño, la evidencia está disponible solo en formato MP4 (no GIF).
+
+**Características demostradas**:
+- **MediaPipe Hands**: Detección de 21 landmarks en tiempo real
+- **Conteo de dedos**: Algoritmo adaptativo según handedness (Left/Right)
+  - Pulgar: Posición X relativa (invertida según mano)
+  - Otros dedos: Posición Y (tip < PIP = extendido)
+- **Reconocimiento de gestos RPS**:
+  - 0 dedos arriba → 🪨 Piedra
+  - 5 dedos arriba → 📄 Papel
+  - Índice + medio (ring/pinky abajo) → ✂️ Tijeras
+- **Validación de estabilidad**: 8 frames consecutivos para confirmar jugada
+- **Game Logic**: Elección aleatoria de PC, determinación de ganador (win/lose/tie)
+- **HUD informativo**: 
+  - Estado de dedos (0/1 por cada dedo)
+  - Distancias entre landmarks
+  - Instrucciones y resultado del juego
+- **Máquina de estados**: idle → detecting → result (2 segundos de display)
+
+**Controles**:
+- `r`: Reset del juego
+- `q`: Salir
+
+---
+
+### Punto 8: Reconocimiento de Voz + Processing
+
+#### Demostración en Video - Punto 8
+
+**Video disponible**: [renders/punto8/punto_ocho_voz_processing.mp4](renders/punto8/punto_ocho_voz_processing.mp4)
+
+> **Nota**: Por limitaciones de tamaño, la evidencia está disponible solo en formato MP4 (no GIF).
+
+**Características demostradas**:
+- **Reconocimiento de voz**: Google Speech Recognition API (español)
+- **Comunicación OSC bidireccional**:
+  - Python → Processing (puerto 8000): Comandos visuales
+  - Processing → Python (puerto 8001): Confirmaciones
+- **Comandos de color**: "rojo", "verde", "azul" → `/visual/color`
+- **Comandos de forma**: "círculo", "cuadrado", "triángulo" → `/visual/shape`
+- **Comandos de efectos**: 
+  - "girar" → `/visual/rotate`
+  - "agrandar" → `/visual/scale`
+  - "limpiar" → `/scene/clear`
+  - "explosión" → `/effects/explosion`
+- **Text-to-Speech**: pyttsx3 confirma cada acción con voz en español
+- **Visualización Processing**: Renderizado en tiempo real de formas con colores dinámicos
+- **Mensaje OSC completo**: Address pattern + argumentos tipados (int/string/bool)
+
+**Arquitectura**:
+```
+Micrófono → SpeechRecognition → Comandos en español
+    ↓
+Python OSC Client (puerto 8000)
+    ↓
+Processing oscP5 Server (puerto 8000) → Visualización
+    ↓
+Confirmaciones OSC (puerto 8001)
+    ↓
+Python TTS (pyttsx3) → Retroalimentación auditiva
+```
 
 ---
 

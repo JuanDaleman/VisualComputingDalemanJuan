@@ -1,0 +1,8 @@
+SpeechRecognition
+pyaudio
+pyttsx3
+python-osc
+pocketsphinx
+numpy
+scipy
+matplotlib
