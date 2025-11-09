@@ -161,7 +161,7 @@ Sistema: Windows 10/11, Linux, macOS
 ```
 2025-11-07_taller_integrado_computacion_visual/
 ├── threejs/
-│   ├── punto1_materiales_luz/      # Puntos 1, 2, 3: Materiales, Geometría, Shaders
+│   ├── punto1_2_3_materiales_luz/  # Puntos 1, 2, 3: Materiales, Geometría, Shaders
 │   │   ├── src/
 │   │   │   ├── main.js                      # Aplicación principal
 │   │   │   ├── ColorAnalyzer.js             # Análisis CIELAB (Punto 1)
@@ -254,7 +254,7 @@ git clone https://github.com/JuanDaleman/VisualComputingDalemanJuan.git
 cd VisualComputingDalemanJuan/2025-11-07_taller_integrado_computacion_visual
 
 # 2. Ir al proyecto Three.js
-cd threejs/punto1_materiales_luz
+cd threejs/punto1_2_3_materiales_luz
 
 # 3. Instalar dependencias
 npm install
@@ -271,9 +271,9 @@ Si tienes problemas con los symlinks, copia los assets directamente:
 
 ```bash
 # Desde la raíz del taller
-cp -r glb_models/* threejs/punto1_materiales_luz/public/models/
-cp -r textures/* threejs/punto1_materiales_luz/public/textures/
-cp -r hdri/* threejs/punto1_materiales_luz/public/hdri/
+cp -r glb_models/* threejs/punto1_2_3_materiales_luz/public/models/
+cp -r textures/* threejs/punto1_2_3_materiales_luz/public/textures/
+cp -r hdri/* threejs/punto1_2_3_materiales_luz/public/hdri/
 ```
 
 ## 🎮 Controles Interactivos
@@ -1059,17 +1059,17 @@ Beneficio: Separación de responsabilidades
 **Soluciones**:
 ```bash
 # 1. Verificar symlinks (Windows PowerShell como Admin)
-cd threejs/punto1_materiales_luz/public
+cd threejs/punto1_2_3_materiales_luz/public
 ls -l  # Debe mostrar symlinks
 
 # 2. Si symlinks fallan, copiar assets
 cd ../../..  # Volver a raíz
-cp -r glb_models/* threejs/punto1_materiales_luz/public/models/
-cp -r textures/* threejs/punto1_materiales_luz/public/textures/
-cp -r hdri/* threejs/punto1_materiales_luz/public/hdri/
+cp -r glb_models/* threejs/punto1_2_3_materiales_luz/public/models/
+cp -r textures/* threejs/punto1_2_3_materiales_luz/public/textures/
+cp -r hdri/* threejs/punto1_2_3_materiales_luz/public/hdri/
 
 # 3. Verificar permisos
-icacls threejs/punto1_materiales_luz/public
+icacls threejs/punto1_2_3_materiales_luz/public
 ```
 
 ### Problema: Texturas PBR no aparecen
@@ -1119,16 +1119,28 @@ group.traverse(child => {
 });
 ```
 
-## 👨‍💻 Autor
+## 👨‍💻 Autores
 
-**Juan Daleman**  
+**Juan Camilo D'Aleman Rodriguez**  
 Estudiante de Ingeniería de Sistemas  
 Universidad Nacional de Colombia  
 Curso: Visual Computing 2025
 
-**Contacto**:
-- GitHub: [@JuanDaleman](https://github.com/JuanDaleman)
-- Repositorio: [VisualComputingDalemanJuan](https://github.com/JuanDaleman/VisualComputingDalemanJuan)
+**Juan Esteban Medina Cardenas**  
+Estudiante de Ingeniería de Sistemas  
+Universidad Nacional de Colombia  
+Curso: Visual Computing 2025
+
+**Juan Esteban Muñoz Muñoz**  
+Estudiante de Ingeniería de Sistemas  
+Universidad Nacional de Colombia  
+Curso: Visual Computing 2025
+
+**Manuel Felipe Espinosa**  
+Estudiante de Ingeniería de Sistemas  
+Universidad Nacional de Colombia  
+Curso: Visual Computing 2025
+
 
 ## 📄 Licencia
 
@@ -1157,5 +1169,3 @@ Ver [LICENSE](../LICENSE) para más detalles.
 ---
 
 **Última actualización**: Noviembre 8, 2025  
-**Estado del proyecto**: Puntos 1-2 completados ✅ | Puntos 3-11 planificados 🚧  
-**Progreso total**: 68/100 puntos (18.2% del taller completo)
