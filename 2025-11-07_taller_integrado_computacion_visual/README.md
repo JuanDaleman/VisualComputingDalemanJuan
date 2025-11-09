@@ -48,7 +48,6 @@ Construir un ecosistema visual donde **color, forma, geometría y luz** dialogue
 
 ### ✅ Punto 3: Shaders Personalizados y Efectos Visuales
 
-**Estado**: Completado ✅
 
 **Implementación**:
 - ✅ **7 Shaders GLSL completos**: Vertex + Fragment shaders personalizados
@@ -83,7 +82,6 @@ Construir un ecosistema visual donde **color, forma, geometría y luz** dialogue
 
 ### ✅ Punto 6: UI, Entrada e Interacción
 
-**Estado**: Completado ✅
 
 **Implementación**:
 - ✅ **Interfaz de usuario HTML**: Botón para cambiar color aleatorio y slider para velocidad de rotación
@@ -99,7 +97,6 @@ Construir un ecosistema visual donde **color, forma, geometría y luz** dialogue
 
 ### ✅ Punto 7: Gestos con Cámara Web (MediaPipe Hands)
 
-**Estado**: Completado ✅
 
 **Implementación**:
 - ✅ **Detección de manos en tiempo real**: MediaPipe Hands con 21 landmarks por mano
@@ -118,7 +115,6 @@ Construir un ecosistema visual donde **color, forma, geometría y luz** dialogue
 
 ### ✅ Punto 8: Reconocimiento de Voz y Control por Comandos
 
-**Estado**: Completado ✅
 
 **Implementación**:
 - ✅ **Reconocimiento de voz en español**: SpeechRecognition para comandos de voz (Google Speech Recognition API)
@@ -138,7 +134,6 @@ Construir un ecosistema visual donde **color, forma, geometría y luz** dialogue
 
 ### ✅ Punto 9: Interfaces Multimodales (Voz + Gestos)
 
-**Estado**: Completado ✅
 
 **Implementación**:
 - ✅ **Reconocimiento de voz**: Web Speech API con comandos en español
@@ -159,7 +154,6 @@ Construir un ecosistema visual donde **color, forma, geometría y luz** dialogue
 
 ### ✅ Punto 11: Espacios Proyectivos y Matrices de Proyección
 
-**Estado**: Completado ✅
 
 **Implementación**:
 - ✅ **Coordenadas homogéneas**: Sistema (x, y, z, w) para proyecciones
@@ -180,225 +174,6 @@ Construir un ecosistema visual donde **color, forma, geometría y luz** dialogue
 
 **Tecnologías**: Three.js PerspectiveCamera, OrthographicCamera, Matrix4, Vector4
 
-## 🛠️ Herramientas y Entorno
-
-### Stack Tecnológico
-
-**Motor 3D**:
-- Three.js v0.157.0 - Renderizado WebGL
-- Vite v4.4.5 - Build tool y HMR
-- TWEEN.js v21.0.0 - Sistema de animaciones
-
-**Análisis Científico**:
-- chroma-js v2.4.2 - Conversión entre espacios de color
-- CIELAB Delta E (CIE76) - Contraste perceptual
-- WCAG 2.1 - Estándares de accesibilidad
-
-**Assets 3D**:
-- Modelos GLB: McLaren P1, City Building, Donald Duck
-- Texturas PBR 2K: Metal, Concrete, Wood (6 mapas c/u)
-- HDRI 4K: Sunset sky, Day environment
-
-### Entorno de Desarrollo
-
-```bash
-Node.js: v16+
-npm: v8+
-Navegador: Chrome/Firefox/Edge (WebGL 2.0)
-Sistema: Windows 10/11, Linux, macOS
-```
-
-## 📁 Estructura del Repositorio
-
-```
-2025-11-07_taller_integrado_computacion_visual/
-├── threejs/
-│   ├── punto1_2_3_materiales_luz/  # Puntos 1, 2, 3: Materiales, Geometría, Shaders
-│   │   ├── src/
-│   │   │   ├── main.js                      # Aplicación principal
-│   │   │   ├── ColorAnalyzer.js             # Análisis CIELAB (Punto 1)
-│   │   │   ├── shaders/                     # Shaders GLSL (Punto 3)
-│   │   │   │   ├── positionColor.vert/frag
-│   │   │   │   ├── timeColor.vert/frag
-│   │   │   │   ├── toonShading.vert/frag
-│   │   │   │   ├── gradient.vert/frag
-│   │   │   │   ├── uvDistortion.vert/frag
-│   │   │   │   ├── proceduralTexture.vert/frag
-│   │   │   │   └── wireframe.vert/frag
-│   │   │   └── managers/
-│   │   │       ├── CameraManager.js         # Control de cámaras
-│   │   │       ├── LightingManager.js       # Iluminación y HDRI
-│   │   │       ├── MaterialManager.js       # Materiales PBR
-│   │   │       ├── AnimationManager.js      # Animaciones TWEEN
-│   │   │       ├── UIManager.js             # Interfaz de usuario
-│   │   │       ├── SceneManager.js          # Gestión de escena
-│   │   │       ├── ProceduralGeometryManager.js  # Punto 2
-│   │   │       └── ShaderManager.js         # Gestión de shaders (Punto 3)
-│   │   ├── public/
-│   │   │   ├── models/          # Symlinks a modelos GLB
-│   │   │   ├── textures/        # Symlinks a texturas PBR
-│   │   │   └── hdri/            # Symlinks a entornos HDRI
-│   │   ├── index.html
-│   │   ├── package.json
-│   │   └── vite.config.js
-│   ├── punto6_ui_input/            # Punto 6: UI, Entrada e Interacción
-│   │   ├── src/
-│   │   │   ├── main.js                      # UI, keyboard, touch, collision
-│   │   │   ├── counter.js
-│   │   │   └── style.css
-│   │   ├── public/
-│   │   ├── index.html
-│   │   └── package.json
-│   ├── punto9_voz_gestos/          # Punto 9: Interfaces Multimodales
-│   │   ├── src/
-│   │   │   ├── main.js                      # Entry point
-│   │   │   ├── voice_gestures.js            # Web Speech API + MediaPipe
-│   │   │   └── style.css
-│   │   ├── index.html
-│   │   └── package.json
-│   └── punto11_proyecciones/       # Punto 11: Espacios Proyectivos
-│       ├── src/
-│       │   ├── main.js                      # Entry point
-│       │   ├── proyections.js               # Matrices MVP, coordenadas homogéneas
-│       │   └── style.css
-│       ├── index.html
-│       └── package.json
-├── python/                      # Implementaciones Python
-│   ├── punto7_gestos_manos/         # Punto 7: MediaPipe Hands RPS
-│   │   ├── src/
-│   │   │   └── p7.py                        # Rock-Paper-Scissors game
-│   │   ├── README.md                        # Documentación detallada
-│   │   ├── requirements.txt                 # Dependencies (mediapipe, opencv-python, numpy)
-│   │   └── .gitignore
-│   └── punto8_voz_processing/       # Punto 8: Voice + OSC
-│       ├── src/
-│       │   └── p8.py                        # Voice recognition + OSC client
-│       ├── README.md                        # Documentación OSC
-│       ├── requirements.txt                 # Dependencies (SpeechRecognition, python-osc, pyttsx3, etc.)
-│       └── .gitignore
-├── processing/                  # Sketches de Processing
-│   └── punto8/                      # Punto 8: Visualización OSC
-│       └── sketch/
-│           └── sketch.pde                   # oscP5 receiver + visual effects
-├── glb_models/                  # Modelos 3D compartidos
-│   ├── ScaledMclaren.glb
-│   ├── ScaledCity.glb
-│   └── ScaleDonald.glb
-├── textures/                    # Texturas PBR compartidas
-│   ├── Metal048B_2K-JPG/
-│   ├── PavingStones067_2K-JPG/
-│   └── WoodFloor064_2K-JPG/
-├── hdri/                        # Entornos HDRI compartidos
-│   ├── qwantani_sunset_puresky_4k.exr
-│   └── zawiszy_czarnego_4k.hdr
-├── renders/                     # Evidencias visuales
-│   ├── punto1/
-│   │   ├── images/              # Screenshots
-│   │   ├── gif_punto_uno.gif    # Demostración animada
-│   │   └── punto_uno_escena.mp4 # Video completo
-│   ├── punto2/
-│   │   ├── gif_punto_dos.gif
-│   │   └── punto_dos_escena.mp4
-│   ├── punto3/
-│   │   ├── images/              # Screenshots de cada shader
-│   │   │   ├── color_Posicion.png
-│   │   │   ├── color_Animado.png
-│   │   │   ├── toon_Shading.png
-│   │   │   ├── gradiente.png
-│   │   │   ├── distorsion_UV.png
-│   │   │   ├── textura_Procedural.png
-│   │   │   └── wireframe.png
-│   │   ├── gif_punto_tres.gif   # Demostración animada
-│   │   └── punto_tres_escena.mp4 # Video completo
-│   ├── punto6/                      # Punto 6: UI e Interacción (video disponible)
-│   ├── punto7/                      # Punto 7: Gestos con MediaPipe
-│   │   └── punto_siete_gestos_manos.mp4
-│   ├── punto8/                      # Punto 8: Reconocimiento de Voz
-│   │   └── punto_ocho_voz_processing.mp4
-│   ├── punto9/
-│   │   └── punto_nueve_voz_gestos.gif  # Demostración multimodal
-│   └── punto11/
-│       └── punto_once_proyecciones.gif  # Demostración proyecciones
-├── docs/
-│   ├── color_analysis.md        # Análisis cromático CIELAB
-│   └── procedural_modeling.md   # Comparativa modelado
-├── taller_3.md                  # Especificación del taller
-└── README.md                    # Este archivo
-```
-
-## 🚀 Inicio Rápido
-
-### Instalación
-
-#### Proyectos Three.js (Puntos 1-3, 6, 9, 11)
-
-```bash
-# 1. Clonar repositorio
-git clone https://github.com/JuanDaleman/VisualComputingDalemanJuan.git
-cd VisualComputingDalemanJuan/2025-11-07_taller_integrado_computacion_visual
-
-# 2. Ir al proyecto Three.js deseado
-cd threejs/punto1_2_3_materiales_luz  # O punto6_ui_input, punto9_voz_gestos, punto11_proyecciones
-
-# 3. Instalar dependencias
-npm install
-
-# 4. Ejecutar servidor de desarrollo
-npm run dev
-```
-
-El proyecto se abrirá automáticamente en `http://localhost:3001` (o puerto disponible)
-
-#### Proyectos Python (Puntos 7, 8)
-
-```bash
-# 1. Navegar al proyecto Python
-cd python/punto7_gestos_manos  # O punto8_voz_processing
-
-# 2. Crear entorno virtual (recomendado)
-python -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
-
-# 3. Instalar dependencias
-pip install -r requirements.txt
-
-# 4. Ejecutar
-python src/p7.py  # O src/p8.py
-```
-
-**Nota Punto 7**: Requiere cámara web conectada (CAMERA_INDEX=0 por defecto)
-
-**Nota Punto 8**: Requiere micrófono y Processing ejecutándose simultáneamente
-
-#### Proyecto Processing (Punto 8 - Visualización)
-
-```bash
-# 1. Navegar al sketch
-cd processing/punto8/sketch
-
-# 2. Abrir en Processing IDE
-processing-java --sketch=$(pwd) --run
-
-# O abrir sketch.pde manualmente en Processing IDE
-
-# 3. Instalar librería oscP5 (Tools → Manage Libraries → Search "oscP5")
-```
-
-**Flujo completo Punto 8**:
-1. Iniciar Processing sketch (puerto 8000)
-2. Iniciar script Python p8.py (puerto 8000 envío, 8001 recepción)
-3. Hablar comandos al micrófono ("rojo", "círculo", "girar", etc.)
-
-### Alternativa: Sin Symlinks (Solo Puntos 1-3)
-
-Si tienes problemas con los symlinks, copia los assets directamente:
-
-```bash
-# Desde la raíz del taller
-cp -r glb_models/* threejs/punto1_2_3_materiales_luz/public/models/
-cp -r textures/* threejs/punto1_2_3_materiales_luz/public/textures/
-cp -r hdri/* threejs/punto1_2_3_materiales_luz/public/hdri/
-```
 
 ## 🎮 Controles Interactivos
 
@@ -732,144 +507,9 @@ export class ShaderManager {
 }
 ```
 
-### 5. Reconocimiento Multimodal: Voz + Gestos (Punto 9)
 
-```javascript
-// voice_gestures.js - Sistema de entrada multimodal
-export function iniciarExperimento() {
-  let voiceCommand = "";
-  let gesture = "";
 
-  // Web Speech API - Reconocimiento de voz
-  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-  recognition.lang = "es-ES";
-  recognition.continuous = true;
-  recognition.onresult = e => {
-    const result = e.results[e.results.length - 1][0].transcript.toLowerCase().trim();
-    voiceCommand = result;
-    console.log("Comando de voz:", voiceCommand);
-    statusDiv.textContent = `🎤 Voz: ${voiceCommand} | ✋ Gesto: ${gesture}`;
-  };
-  recognition.start();
-
-  // MediaPipe Hands - Detección de gestos
-  const hands = new Hands({
-    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`,
-  });
-  hands.setOptions({
-    maxNumHands: 1,
-    modelComplexity: 1,
-    minDetectionConfidence: 0.7,
-    minTrackingConfidence: 0.7,
-  });
-
-  hands.onResults(results => {
-    if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-      const landmarks = results.multiHandLandmarks[0];
-      const wristY = landmarks[0].y;  // Landmark de muñeca
-      const middleY = landmarks[9].y; // Landmark de dedo medio
-
-      // Clasificación de gesto por posición relativa
-      if (wristY > middleY + 0.1) gesture = "mano arriba";
-      else if (wristY < middleY - 0.1) gesture = "mano abajo";
-      else gesture = "mano neutra";
-
-      statusDiv.textContent = `🎤 Voz: ${voiceCommand} | ✋ Gesto: ${gesture}`;
-    } else {
-      gesture = "";
-    }
-  });
-
-  // Lógica condicional multimodal (OR logic)
-  function animate() {
-    requestAnimationFrame(animate);
-
-    if (voiceCommand.includes("subir") || gesture === "mano arriba") {
-      if (cube.position.y < 3) {
-        cube.position.y += 0.01;
-        cube.material.color.set(0xff0000); // Rojo
-      }
-    } else if (voiceCommand.includes("bajar") || gesture === "mano abajo") {
-      if (cube.position.y > -3) {
-        cube.position.y -= 0.01;
-        cube.material.color.set(0xff0000);
-      }
-    } else if (voiceCommand.includes("girar") || gesture === "mano neutra") {
-      cube.rotation.y += 0.01;
-      cube.material.color.set(0x0000ff); // Azul
-    }
-    
-    renderer.render(scene, camera);
-  }
-}
-```
-
-### 6. Proyección MVP y Coordenadas Homogéneas (Punto 11)
-
-```javascript
-// proyections.js - Cálculo manual de matrices de proyección
-function projectPointWithMVP(point, cam) {
-  // Construcción de matrices
-  const model = new THREE.Matrix4().identity();
-  const view = new THREE.Matrix4().copy(cam.matrixWorldInverse);
-  const proj = new THREE.Matrix4().copy(cam.projectionMatrix);
-
-  // MVP = Projection * View * Model
-  const mvp = new THREE.Matrix4();
-  mvp.multiplyMatrices(proj, view);
-
-  // Coordenadas homogéneas (x, y, z, w)
-  const v4 = new THREE.Vector4(point.x, point.y, point.z, 1.0);
-  v4.applyMatrix4(mvp); // Transformación a clip space
-
-  // Perspective divide: (x/w, y/w, z/w)
-  if (Math.abs(v4.w) > 1e-8) {
-    v4.x /= v4.w;
-    v4.y /= v4.w;
-    v4.z /= v4.w;
-  }
-
-  // v4.x, v4.y, v4.z ahora están en NDC [-1, 1]
-  return {
-    ndc: new THREE.Vector3(v4.x, v4.y, v4.z),
-    mvpMatrix: mvp,
-    viewMatrix: view,
-    projMatrix: proj,
-    clipW: v4.w
-  };
-}
-
-// Mapeo NDC → Screen Pixels
-function ndcToScreen(ndc, width, height) {
-  const xPx = (ndc.x * 0.5 + 0.5) * width;
-  const yPx = (-ndc.y * 0.5 + 0.5) * height; // Inversión de Y
-  return { xPx, yPx };
-}
-
-// Visualización de profundidad con gradiente de color
-function depthToColor(zCam, cam) {
-  const near = cam.near;
-  const far = cam.far;
-  const d = Math.abs(zCam);
-  const t = Math.min(1, Math.max(0, (d - near) / (far - near)));
-  
-  // Gradiente: azul (cerca) → verde → rojo (lejos)
-  const r = Math.floor(255 * Math.min(1, t * 1.6));
-  const g = Math.floor(255 * Math.max(0, 1 - Math.abs(t - 0.5) * 2));
-  const b = Math.floor(255 * (1 - t));
-  return `rgb(${r},${g},${b})`;
-}
-
-// Conmutación de cámaras
-document.getElementById("btnPerspective").onclick = () => {
-  camera = camPerspective; // FOV 50°, aspect ratio dinámico
-};
-document.getElementById("btnOrtho").onclick = () => {
-  camera = camOrtho; // Frustum size 6, sin perspective divide
-};
-```
-
-### 7. UI, Input y Detección de Colisiones (Punto 6)
+### 5. UI, Input y Detección de Colisiones (Punto 6)
 
 ```javascript
 // main.js - Sistema de entrada multimodal
@@ -925,7 +565,7 @@ function animate() {
 }
 ```
 
-### 8. Reconocimiento de Gestos con MediaPipe (Punto 7)
+### 6. Reconocimiento de Gestos con MediaPipe (Punto 7)
 
 ```python
 # p7.py - Rock-Paper-Scissors con MediaPipe Hands
@@ -1004,7 +644,7 @@ while cap.isOpened():
             print(f"Player: {current_gesture}, PC: {pc_choice} → {result}")
 ```
 
-### 9. Reconocimiento de Voz + OSC (Punto 8)
+### 7. Reconocimiento de Voz + OSC (Punto 8)
 
 ```python
 # p8.py - Voice commands → OSC → Processing
@@ -1123,7 +763,79 @@ void draw() {
 }
 ```
 
-### 10. Sistema de Iluminación de 3 Puntos
+### 8. Reconocimiento Multimodal: Voz + Gestos (Punto 9)
+
+```javascript
+// voice_gestures.js - Sistema de entrada multimodal
+export function iniciarExperimento() {
+  let voiceCommand = "";
+  let gesture = "";
+
+  // Web Speech API - Reconocimiento de voz
+  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  recognition.lang = "es-ES";
+  recognition.continuous = true;
+  recognition.onresult = e => {
+    const result = e.results[e.results.length - 1][0].transcript.toLowerCase().trim();
+    voiceCommand = result;
+    console.log("Comando de voz:", voiceCommand);
+    statusDiv.textContent = `🎤 Voz: ${voiceCommand} | ✋ Gesto: ${gesture}`;
+  };
+  recognition.start();
+
+  // MediaPipe Hands - Detección de gestos
+  const hands = new Hands({
+    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`,
+  });
+  hands.setOptions({
+    maxNumHands: 1,
+    modelComplexity: 1,
+    minDetectionConfidence: 0.7,
+    minTrackingConfidence: 0.7,
+  });
+
+  hands.onResults(results => {
+    if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+      const landmarks = results.multiHandLandmarks[0];
+      const wristY = landmarks[0].y;  // Landmark de muñeca
+      const middleY = landmarks[9].y; // Landmark de dedo medio
+
+      // Clasificación de gesto por posición relativa
+      if (wristY > middleY + 0.1) gesture = "mano arriba";
+      else if (wristY < middleY - 0.1) gesture = "mano abajo";
+      else gesture = "mano neutra";
+
+      statusDiv.textContent = `🎤 Voz: ${voiceCommand} | ✋ Gesto: ${gesture}`;
+    } else {
+      gesture = "";
+    }
+  });
+
+  // Lógica condicional multimodal (OR logic)
+  function animate() {
+    requestAnimationFrame(animate);
+
+    if (voiceCommand.includes("subir") || gesture === "mano arriba") {
+      if (cube.position.y < 3) {
+        cube.position.y += 0.01;
+        cube.material.color.set(0xff0000); // Rojo
+      }
+    } else if (voiceCommand.includes("bajar") || gesture === "mano abajo") {
+      if (cube.position.y > -3) {
+        cube.position.y -= 0.01;
+        cube.material.color.set(0xff0000);
+      }
+    } else if (voiceCommand.includes("girar") || gesture === "mano neutra") {
+      cube.rotation.y += 0.01;
+      cube.material.color.set(0x0000ff); // Azul
+    }
+    
+    renderer.render(scene, camera);
+  }
+}
+```
+
+### 9. Sistema de Iluminación de 3 Puntos
 
 ```javascript
 // LightingManager.js - Preset Atardecer
@@ -1149,6 +861,71 @@ applyLightingPreset(preset) {
         this.ambientLight.intensity = 0.4;
     }
 }
+```
+
+### 10. Proyección MVP y Coordenadas Homogéneas (Punto 11)
+
+```javascript
+// proyections.js - Cálculo manual de matrices de proyección
+function projectPointWithMVP(point, cam) {
+  // Construcción de matrices
+  const model = new THREE.Matrix4().identity();
+  const view = new THREE.Matrix4().copy(cam.matrixWorldInverse);
+  const proj = new THREE.Matrix4().copy(cam.projectionMatrix);
+
+  // MVP = Projection * View * Model
+  const mvp = new THREE.Matrix4();
+  mvp.multiplyMatrices(proj, view);
+
+  // Coordenadas homogéneas (x, y, z, w)
+  const v4 = new THREE.Vector4(point.x, point.y, point.z, 1.0);
+  v4.applyMatrix4(mvp); // Transformación a clip space
+
+  // Perspective divide: (x/w, y/w, z/w)
+  if (Math.abs(v4.w) > 1e-8) {
+    v4.x /= v4.w;
+    v4.y /= v4.w;
+    v4.z /= v4.w;
+  }
+
+  // v4.x, v4.y, v4.z ahora están en NDC [-1, 1]
+  return {
+    ndc: new THREE.Vector3(v4.x, v4.y, v4.z),
+    mvpMatrix: mvp,
+    viewMatrix: view,
+    projMatrix: proj,
+    clipW: v4.w
+  };
+}
+
+// Mapeo NDC → Screen Pixels
+function ndcToScreen(ndc, width, height) {
+  const xPx = (ndc.x * 0.5 + 0.5) * width;
+  const yPx = (-ndc.y * 0.5 + 0.5) * height; // Inversión de Y
+  return { xPx, yPx };
+}
+
+// Visualización de profundidad con gradiente de color
+function depthToColor(zCam, cam) {
+  const near = cam.near;
+  const far = cam.far;
+  const d = Math.abs(zCam);
+  const t = Math.min(1, Math.max(0, (d - near) / (far - near)));
+  
+  // Gradiente: azul (cerca) → verde → rojo (lejos)
+  const r = Math.floor(255 * Math.min(1, t * 1.6));
+  const g = Math.floor(255 * Math.max(0, 1 - Math.abs(t - 0.5) * 2));
+  const b = Math.floor(255 * (1 - t));
+  return `rgb(${r},${g},${b})`;
+}
+
+// Conmutación de cámaras
+document.getElementById("btnPerspective").onclick = () => {
+  camera = camPerspective; // FOV 50°, aspect ratio dinámico
+};
+document.getElementById("btnOrtho").onclick = () => {
+  camera = camOrtho; // Frustum size 6, sin perspective divide
+};
 ```
 
 ## 📸 Evidencias Gráficas
@@ -1259,28 +1036,6 @@ applyLightingPreset(preset) {
 
 ---
 
-### Punto 9: Interfaces Multimodales (Voz + Gestos)
-
-#### Demostración Animada - Punto 9
-
-<div align="center">
-
-![Punto 9 - Voz + Gestos](renders/punto9/punto_nueve_voz_gestos.gif)
-
-*Demostración del sistema multimodal: reconocimiento de voz en español ("subir", "bajar", "girar") + detección de gestos con MediaPipe Hands (mano arriba/abajo/neutra). El cubo responde a comandos de voz OR gestos, cambiando posición, rotación y color en tiempo real con retroalimentación visual en UI overlay.*
-
-</div>
-
-**Características demostradas**:
-- **Web Speech API**: Reconocimiento continuo en español (es-ES)
-- **MediaPipe Hands**: Detección de 21 landmarks, clasificación de posición de mano
-- **Lógica condicional**: Comando de voz OR gesto activa acción
-- **Sincronización**: Hilos concurrentes para ambas entradas
-- **Retroalimentación**: Status div con estado en tiempo real (🎤 Voz | ✋ Gesto)
-- **Acciones visuales**: Movimiento Y, rotación, cambio de color RGB
-
----
-
 ---
 
 ### Punto 6: UI, Entrada e Interacción
@@ -1368,6 +1123,29 @@ Python TTS (pyttsx3) → Retroalimentación auditiva
 ```
 
 ---
+
+### Punto 9: Interfaces Multimodales (Voz + Gestos)
+
+#### Demostración Animada - Punto 9
+
+<div align="center">
+
+![Punto 9 - Voz + Gestos](renders/punto9/punto_nueve_voz_gestos.gif)
+
+*Demostración del sistema multimodal: reconocimiento de voz en español ("subir", "bajar", "girar") + detección de gestos con MediaPipe Hands (mano arriba/abajo/neutra). El cubo responde a comandos de voz OR gestos, cambiando posición, rotación y color en tiempo real con retroalimentación visual en UI overlay.*
+
+</div>
+
+**Características demostradas**:
+- **Web Speech API**: Reconocimiento continuo en español (es-ES)
+- **MediaPipe Hands**: Detección de 21 landmarks, clasificación de posición de mano
+- **Lógica condicional**: Comando de voz OR gesto activa acción
+- **Sincronización**: Hilos concurrentes para ambas entradas
+- **Retroalimentación**: Status div con estado en tiempo real (🎤 Voz | ✋ Gesto)
+- **Acciones visuales**: Movimiento Y, rotación, cambio de color RGB
+
+---
+
 
 ### Punto 11: Espacios Proyectivos y Matrices de Proyección
 
@@ -1509,6 +1287,225 @@ Beneficio: Separación de responsabilidades
 
 **Resultado**: Código modular, testeable, reutilizable para Puntos 3-11.
 
+
+## 🛠️ Herramientas y Entorno
+
+### Stack Tecnológico
+
+**Motor 3D**:
+- Three.js v0.157.0 - Renderizado WebGL
+- Vite v4.4.5 - Build tool y HMR
+- TWEEN.js v21.0.0 - Sistema de animaciones
+
+**Análisis Científico**:
+- chroma-js v2.4.2 - Conversión entre espacios de color
+- CIELAB Delta E (CIE76) - Contraste perceptual
+- WCAG 2.1 - Estándares de accesibilidad
+
+**Assets 3D**:
+- Modelos GLB: McLaren P1, City Building, Donald Duck
+- Texturas PBR 2K: Metal, Concrete, Wood (6 mapas c/u)
+- HDRI 4K: Sunset sky, Day environment
+
+### Entorno de Desarrollo
+
+```bash
+Node.js: v16+
+npm: v8+
+Navegador: Chrome/Firefox/Edge (WebGL 2.0)
+Sistema: Windows 10/11, Linux, macOS
+```
+
+## 📁 Estructura del Repositorio
+
+```
+2025-11-07_taller_integrado_computacion_visual/
+├── threejs/
+│   ├── punto1_2_3_materiales_luz/  # Puntos 1, 2, 3: Materiales, Geometría, Shaders
+│   │   ├── src/
+│   │   │   ├── main.js                      # Aplicación principal
+│   │   │   ├── ColorAnalyzer.js             # Análisis CIELAB (Punto 1)
+│   │   │   ├── shaders/                     # Shaders GLSL (Punto 3)
+│   │   │   │   ├── positionColor.vert/frag
+│   │   │   │   ├── timeColor.vert/frag
+│   │   │   │   ├── toonShading.vert/frag
+│   │   │   │   ├── gradient.vert/frag
+│   │   │   │   ├── uvDistortion.vert/frag
+│   │   │   │   ├── proceduralTexture.vert/frag
+│   │   │   │   └── wireframe.vert/frag
+│   │   │   └── managers/
+│   │   │       ├── CameraManager.js         # Control de cámaras
+│   │   │       ├── LightingManager.js       # Iluminación y HDRI
+│   │   │       ├── MaterialManager.js       # Materiales PBR
+│   │   │       ├── AnimationManager.js      # Animaciones TWEEN
+│   │   │       ├── UIManager.js             # Interfaz de usuario
+│   │   │       ├── SceneManager.js          # Gestión de escena
+│   │   │       ├── ProceduralGeometryManager.js  # Punto 2
+│   │   │       └── ShaderManager.js         # Gestión de shaders (Punto 3)
+│   │   ├── public/
+│   │   │   ├── models/          # Symlinks a modelos GLB
+│   │   │   ├── textures/        # Symlinks a texturas PBR
+│   │   │   └── hdri/            # Symlinks a entornos HDRI
+│   │   ├── index.html
+│   │   ├── package.json
+│   │   └── vite.config.js
+│   ├── punto6_ui_input/            # Punto 6: UI, Entrada e Interacción
+│   │   ├── src/
+│   │   │   ├── main.js                      # UI, keyboard, touch, collision
+│   │   │   ├── counter.js
+│   │   │   └── style.css
+│   │   ├── public/
+│   │   ├── index.html
+│   │   └── package.json
+│   ├── punto9_voz_gestos/          # Punto 9: Interfaces Multimodales
+│   │   ├── src/
+│   │   │   ├── main.js                      # Entry point
+│   │   │   ├── voice_gestures.js            # Web Speech API + MediaPipe
+│   │   │   └── style.css
+│   │   ├── index.html
+│   │   └── package.json
+│   └── punto11_proyecciones/       # Punto 11: Espacios Proyectivos
+│       ├── src/
+│       │   ├── main.js                      # Entry point
+│       │   ├── proyections.js               # Matrices MVP, coordenadas homogéneas
+│       │   └── style.css
+│       ├── index.html
+│       └── package.json
+├── python/                      # Implementaciones Python
+│   ├── punto7_gestos_manos/         # Punto 7: MediaPipe Hands RPS
+│   │   ├── src/
+│   │   │   └── p7.py                        # Rock-Paper-Scissors game
+│   │   ├── README.md                        # Documentación detallada
+│   │   ├── requirements.txt                 # Dependencies (mediapipe, opencv-python, numpy)
+│   │   └── .gitignore
+│   └── punto8_voz_processing/       # Punto 8: Voice + OSC
+│       ├── src/
+│       │   └── p8.py                        # Voice recognition + OSC client
+│       ├── README.md                        # Documentación OSC
+│       ├── requirements.txt                 # Dependencies (SpeechRecognition, python-osc, pyttsx3, etc.)
+│       └── .gitignore
+├── processing/                  # Sketches de Processing
+│   └── punto8/                      # Punto 8: Visualización OSC
+│       └── sketch/
+│           └── sketch.pde                   # oscP5 receiver + visual effects
+├── glb_models/                  # Modelos 3D compartidos
+│   ├── ScaledMclaren.glb
+│   ├── ScaledCity.glb
+│   └── ScaleDonald.glb
+├── textures/                    # Texturas PBR compartidas
+│   ├── Metal048B_2K-JPG/
+│   ├── PavingStones067_2K-JPG/
+│   └── WoodFloor064_2K-JPG/
+├── hdri/                        # Entornos HDRI compartidos
+│   ├── qwantani_sunset_puresky_4k.exr
+│   └── zawiszy_czarnego_4k.hdr
+├── renders/                     # Evidencias visuales
+│   ├── punto1/
+│   │   ├── images/              # Screenshots
+│   │   ├── gif_punto_uno.gif    # Demostración animada
+│   │   └── punto_uno_escena.mp4 # Video completo
+│   ├── punto2/
+│   │   ├── gif_punto_dos.gif
+│   │   └── punto_dos_escena.mp4
+│   ├── punto3/
+│   │   ├── images/              # Screenshots de cada shader
+│   │   │   ├── color_Posicion.png
+│   │   │   ├── color_Animado.png
+│   │   │   ├── toon_Shading.png
+│   │   │   ├── gradiente.png
+│   │   │   ├── distorsion_UV.png
+│   │   │   ├── textura_Procedural.png
+│   │   │   └── wireframe.png
+│   │   ├── gif_punto_tres.gif   # Demostración animada
+│   │   └── punto_tres_escena.mp4 # Video completo
+│   ├── punto6/                      # Punto 6: UI e Interacción (video disponible)
+│   ├── punto7/                      # Punto 7: Gestos con MediaPipe
+│   │   └── punto_siete_gestos_manos.mp4
+│   ├── punto8/                      # Punto 8: Reconocimiento de Voz
+│   │   └── punto_ocho_voz_processing.mp4
+│   ├── punto9/
+│   │   └── punto_nueve_voz_gestos.gif  # Demostración multimodal
+│   └── punto11/
+│       └── punto_once_proyecciones.gif  # Demostración proyecciones
+├── docs/
+│   ├── color_analysis.md        # Análisis cromático CIELAB
+│   └── procedural_modeling.md   # Comparativa modelado
+├── taller_3.md                  # Especificación del taller
+└── README.md                    # Este archivo
+```
+
+## 🚀 Inicio Rápido
+
+### Instalación
+
+#### Proyectos Three.js (Puntos 1-3, 6, 9, 11)
+
+```bash
+# 1. Clonar repositorio
+git clone https://github.com/JuanDaleman/VisualComputingDalemanJuan.git
+cd VisualComputingDalemanJuan/2025-11-07_taller_integrado_computacion_visual
+
+# 2. Ir al proyecto Three.js deseado
+cd threejs/punto1_2_3_materiales_luz  # O punto6_ui_input, punto9_voz_gestos, punto11_proyecciones
+
+# 3. Instalar dependencias
+npm install
+
+# 4. Ejecutar servidor de desarrollo
+npm run dev
+```
+
+El proyecto se abrirá automáticamente en `http://localhost:3001` (o puerto disponible)
+
+#### Proyectos Python (Puntos 7, 8)
+
+```bash
+# 1. Navegar al proyecto Python
+cd python/punto7_gestos_manos  # O punto8_voz_processing
+
+# 2. Crear entorno virtual (recomendado)
+python -m venv venv
+source venv/bin/activate  # En Windows: venv\Scripts\activate
+
+# 3. Instalar dependencias
+pip install -r requirements.txt
+
+# 4. Ejecutar
+python src/p7.py  # O src/p8.py
+```
+
+**Nota Punto 7**: Requiere cámara web conectada (CAMERA_INDEX=0 por defecto)
+
+**Nota Punto 8**: Requiere micrófono y Processing ejecutándose simultáneamente
+
+#### Proyecto Processing (Punto 8 - Visualización)
+
+```bash
+# 1. Navegar al sketch
+cd processing/punto8/sketch
+
+# 2. Abrir en Processing IDE
+processing-java --sketch=$(pwd) --run
+
+# O abrir sketch.pde manualmente en Processing IDE
+
+# 3. Instalar librería oscP5 (Tools → Manage Libraries → Search "oscP5")
+```
+**Flujo completo Punto 8**:
+1. Iniciar Processing sketch (puerto 8000)
+2. Iniciar script Python p8.py (puerto 8000 envío, 8001 recepción)
+3. Hablar comandos al micrófono ("rojo", "círculo", "girar", etc.)
+
+### Alternativa: Sin Symlinks (Solo Puntos 1-3)
+
+Si tienes problemas con los symlinks, copia los assets directamente:
+
+```bash
+# Desde la raíz del taller
+cp -r glb_models/* threejs/punto1_2_3_materiales_luz/public/models/
+cp -r textures/* threejs/punto1_2_3_materiales_luz/public/textures/
+cp -r hdri/* threejs/punto1_2_3_materiales_luz/public/hdri/
+```
 
 ## 📚 Documentación Adicional
 
