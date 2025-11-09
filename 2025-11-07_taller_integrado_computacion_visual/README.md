@@ -73,16 +73,60 @@ Construir un ecosistema visual donde **color, forma, geometría y luz** dialogue
 
 ---
 
-### 🚧 Puntos 4-11: Planificados
+### 🚧 Puntos 4-8, 10: Planificados
 
 - **Punto 4**: Texturizado dinámico y partículas
 - **Punto 5**: Visualización de imágenes y video 360°
 - **Punto 6**: Entrada e interacción (UI, input, colisiones)
 - **Punto 7**: Gestos con cámara web (MediaPipe Hands)
 - **Punto 8**: Reconocimiento de voz y control por comandos
-- **Punto 9**: Interfaces multimodales (voz + gestos)
 - **Punto 10**: Simulación BCI (EEG sintético)
-- **Punto 11**: Espacios proyectivos y matrices de proyección
+
+---
+
+### ✅ Punto 9: Interfaces Multimodales (Voz + Gestos)
+
+**Estado**: Completado ✅
+
+**Implementación**:
+- ✅ **Reconocimiento de voz**: Web Speech API con comandos en español
+- ✅ **Detección de gestos**: MediaPipe Hands con clasificación de posiciones
+- ✅ **Sincronización multimodal**: Hilos concurrentes para voz y gestos
+- ✅ **Lógica condicional**: Acciones compuestas (voz OR/AND gesto)
+- ✅ **Retroalimentación visual**: Cambio de color y movimiento del objeto 3D
+- ✅ **Status overlay**: UI con estado en tiempo real de ambas entradas
+
+**Comandos implementados**:
+1. **"subir" + mano arriba**: Cubo sube (Y+), color rojo
+2. **"bajar" + mano abajo**: Cubo baja (Y-), color rojo
+3. **"girar" + mano neutra**: Cubo rota (rotación Y), color azul
+
+**Tecnologías**: Web Speech API, MediaPipe Hands v0.4, MediaPipe Camera Utils v0.3, Three.js
+
+---
+
+### ✅ Punto 11: Espacios Proyectivos y Matrices de Proyección
+
+**Estado**: Completado ✅
+
+**Implementación**:
+- ✅ **Coordenadas homogéneas**: Sistema (x, y, z, w) para proyecciones
+- ✅ **Matriz MVP**: Model-View-Projection calculada manualmente
+- ✅ **Cámara perspectiva**: FOV 50°, aspect ratio dinámico
+- ✅ **Cámara ortográfica**: Frustum adaptativo sin distorsión
+- ✅ **Conmutación de cámaras**: Switch en tiempo real con botones UI
+- ✅ **Visualización de profundidad**: Gradiente de color basado en Z (camera-space)
+- ✅ **Proyección 2D**: Marcadores DOM sincronizados con puntos 3D (NDC → screen px)
+- ✅ **Display de matrices**: Vista textual de View, Projection y MVP en tiempo real
+
+**Conceptos demostrados**:
+- **Coordenadas homogéneas**: Vector4(x, y, z, 1.0) para transformaciones
+- **Perspective divide**: (x/w, y/w, z/w) → NDC [-1, 1]
+- **NDC to screen**: Mapeo de Normalized Device Coordinates a píxeles
+- **Depth visualization**: Color coding basado en distancia a cámara
+- **Frustum culling**: Ocultar marcadores fuera del volumen de visión
+
+**Tecnologías**: Three.js PerspectiveCamera, OrthographicCamera, Matrix4, Vector4
 
 ## 🛠️ Herramientas y Entorno
 
@@ -117,34 +161,48 @@ Sistema: Windows 10/11, Linux, macOS
 ```
 2025-11-07_taller_integrado_computacion_visual/
 ├── threejs/
-│   └── punto1_materiales_luz/      # Implementación Three.js
+│   ├── punto1_materiales_luz/      # Puntos 1, 2, 3: Materiales, Geometría, Shaders
+│   │   ├── src/
+│   │   │   ├── main.js                      # Aplicación principal
+│   │   │   ├── ColorAnalyzer.js             # Análisis CIELAB (Punto 1)
+│   │   │   ├── shaders/                     # Shaders GLSL (Punto 3)
+│   │   │   │   ├── positionColor.vert/frag
+│   │   │   │   ├── timeColor.vert/frag
+│   │   │   │   ├── toonShading.vert/frag
+│   │   │   │   ├── gradient.vert/frag
+│   │   │   │   ├── uvDistortion.vert/frag
+│   │   │   │   ├── proceduralTexture.vert/frag
+│   │   │   │   └── wireframe.vert/frag
+│   │   │   └── managers/
+│   │   │       ├── CameraManager.js         # Control de cámaras
+│   │   │       ├── LightingManager.js       # Iluminación y HDRI
+│   │   │       ├── MaterialManager.js       # Materiales PBR
+│   │   │       ├── AnimationManager.js      # Animaciones TWEEN
+│   │   │       ├── UIManager.js             # Interfaz de usuario
+│   │   │       ├── SceneManager.js          # Gestión de escena
+│   │   │       ├── ProceduralGeometryManager.js  # Punto 2
+│   │   │       └── ShaderManager.js         # Gestión de shaders (Punto 3)
+│   │   ├── public/
+│   │   │   ├── models/          # Symlinks a modelos GLB
+│   │   │   ├── textures/        # Symlinks a texturas PBR
+│   │   │   └── hdri/            # Symlinks a entornos HDRI
+│   │   ├── index.html
+│   │   ├── package.json
+│   │   └── vite.config.js
+│   ├── punto9_voz_gestos/          # Punto 9: Interfaces Multimodales
+│   │   ├── src/
+│   │   │   ├── main.js                      # Entry point
+│   │   │   ├── voice_gestures.js            # Web Speech API + MediaPipe
+│   │   │   └── style.css
+│   │   ├── index.html
+│   │   └── package.json
+│   └── punto11_proyecciones/       # Punto 11: Espacios Proyectivos
 │       ├── src/
-│       │   ├── main.js                      # Aplicación principal
-│       │   ├── ColorAnalyzer.js             # Análisis CIELAB (Punto 1)
-│       │   ├── shaders/                     # Shaders GLSL (Punto 3)
-│       │   │   ├── positionColor.vert/frag
-│       │   │   ├── timeColor.vert/frag
-│       │   │   ├── toonShading.vert/frag
-│       │   │   ├── gradient.vert/frag
-│       │   │   ├── uvDistortion.vert/frag
-│       │   │   ├── proceduralTexture.vert/frag
-│       │   │   └── wireframe.vert/frag
-│       │   └── managers/
-│       │       ├── CameraManager.js         # Control de cámaras
-│       │       ├── LightingManager.js       # Iluminación y HDRI
-│       │       ├── MaterialManager.js       # Materiales PBR
-│       │       ├── AnimationManager.js      # Animaciones TWEEN
-│       │       ├── UIManager.js             # Interfaz de usuario
-│       │       ├── SceneManager.js          # Gestión de escena
-│       │       ├── ProceduralGeometryManager.js  # Punto 2
-│       │       └── ShaderManager.js         # Gestión de shaders (Punto 3)
-│       ├── public/
-│       │   ├── models/          # Symlinks a modelos GLB
-│       │   ├── textures/        # Symlinks a texturas PBR
-│       │   └── hdri/            # Symlinks a entornos HDRI
+│       │   ├── main.js                      # Entry point
+│       │   ├── proyections.js               # Matrices MVP, coordenadas homogéneas
+│       │   └── style.css
 │       ├── index.html
-│       ├── package.json
-│       └── vite.config.js
+│       └── package.json
 ├── glb_models/                  # Modelos 3D compartidos
 │   ├── ScaledMclaren.glb
 │   ├── ScaledCity.glb
@@ -164,17 +222,21 @@ Sistema: Windows 10/11, Linux, macOS
 │   ├── punto2/
 │   │   ├── gif_punto_dos.gif
 │   │   └── punto_dos_escena.mp4
-│   └── punto3/
-│       ├── images/              # Screenshots de cada shader
-│       │   ├── color_Posicion.png
-│       │   ├── color_Animado.png
-│       │   ├── toon_Shading.png
-│       │   ├── gradiente.png
-│       │   ├── distorsion_UV.png
-│       │   ├── textura_Procedural.png
-│       │   └── wireframe.png
-│       ├── gif_punto_tres.gif   # Demostración animada
-│       └── punto_tres_escena.mp4 # Video completo
+│   ├── punto3/
+│   │   ├── images/              # Screenshots de cada shader
+│   │   │   ├── color_Posicion.png
+│   │   │   ├── color_Animado.png
+│   │   │   ├── toon_Shading.png
+│   │   │   ├── gradiente.png
+│   │   │   ├── distorsion_UV.png
+│   │   │   ├── textura_Procedural.png
+│   │   │   └── wireframe.png
+│   │   ├── gif_punto_tres.gif   # Demostración animada
+│   │   └── punto_tres_escena.mp4 # Video completo
+│   ├── punto9/
+│   │   └── punto_nueve_voz_gestos.gif  # Demostración multimodal
+│   └── punto11/
+│       └── punto_once_proyecciones.gif  # Demostración proyecciones
 ├── docs/
 │   ├── color_analysis.md        # Análisis cromático CIELAB
 │   └── procedural_modeling.md   # Comparativa modelado
@@ -546,7 +608,144 @@ export class ShaderManager {
 }
 ```
 
-### 5. Sistema de Iluminación de 3 Puntos
+### 5. Reconocimiento Multimodal: Voz + Gestos (Punto 9)
+
+```javascript
+// voice_gestures.js - Sistema de entrada multimodal
+export function iniciarExperimento() {
+  let voiceCommand = "";
+  let gesture = "";
+
+  // Web Speech API - Reconocimiento de voz
+  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  recognition.lang = "es-ES";
+  recognition.continuous = true;
+  recognition.onresult = e => {
+    const result = e.results[e.results.length - 1][0].transcript.toLowerCase().trim();
+    voiceCommand = result;
+    console.log("Comando de voz:", voiceCommand);
+    statusDiv.textContent = `🎤 Voz: ${voiceCommand} | ✋ Gesto: ${gesture}`;
+  };
+  recognition.start();
+
+  // MediaPipe Hands - Detección de gestos
+  const hands = new Hands({
+    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`,
+  });
+  hands.setOptions({
+    maxNumHands: 1,
+    modelComplexity: 1,
+    minDetectionConfidence: 0.7,
+    minTrackingConfidence: 0.7,
+  });
+
+  hands.onResults(results => {
+    if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+      const landmarks = results.multiHandLandmarks[0];
+      const wristY = landmarks[0].y;  // Landmark de muñeca
+      const middleY = landmarks[9].y; // Landmark de dedo medio
+
+      // Clasificación de gesto por posición relativa
+      if (wristY > middleY + 0.1) gesture = "mano arriba";
+      else if (wristY < middleY - 0.1) gesture = "mano abajo";
+      else gesture = "mano neutra";
+
+      statusDiv.textContent = `🎤 Voz: ${voiceCommand} | ✋ Gesto: ${gesture}`;
+    } else {
+      gesture = "";
+    }
+  });
+
+  // Lógica condicional multimodal (OR logic)
+  function animate() {
+    requestAnimationFrame(animate);
+
+    if (voiceCommand.includes("subir") || gesture === "mano arriba") {
+      if (cube.position.y < 3) {
+        cube.position.y += 0.01;
+        cube.material.color.set(0xff0000); // Rojo
+      }
+    } else if (voiceCommand.includes("bajar") || gesture === "mano abajo") {
+      if (cube.position.y > -3) {
+        cube.position.y -= 0.01;
+        cube.material.color.set(0xff0000);
+      }
+    } else if (voiceCommand.includes("girar") || gesture === "mano neutra") {
+      cube.rotation.y += 0.01;
+      cube.material.color.set(0x0000ff); // Azul
+    }
+    
+    renderer.render(scene, camera);
+  }
+}
+```
+
+### 6. Proyección MVP y Coordenadas Homogéneas (Punto 11)
+
+```javascript
+// proyections.js - Cálculo manual de matrices de proyección
+function projectPointWithMVP(point, cam) {
+  // Construcción de matrices
+  const model = new THREE.Matrix4().identity();
+  const view = new THREE.Matrix4().copy(cam.matrixWorldInverse);
+  const proj = new THREE.Matrix4().copy(cam.projectionMatrix);
+
+  // MVP = Projection * View * Model
+  const mvp = new THREE.Matrix4();
+  mvp.multiplyMatrices(proj, view);
+
+  // Coordenadas homogéneas (x, y, z, w)
+  const v4 = new THREE.Vector4(point.x, point.y, point.z, 1.0);
+  v4.applyMatrix4(mvp); // Transformación a clip space
+
+  // Perspective divide: (x/w, y/w, z/w)
+  if (Math.abs(v4.w) > 1e-8) {
+    v4.x /= v4.w;
+    v4.y /= v4.w;
+    v4.z /= v4.w;
+  }
+
+  // v4.x, v4.y, v4.z ahora están en NDC [-1, 1]
+  return {
+    ndc: new THREE.Vector3(v4.x, v4.y, v4.z),
+    mvpMatrix: mvp,
+    viewMatrix: view,
+    projMatrix: proj,
+    clipW: v4.w
+  };
+}
+
+// Mapeo NDC → Screen Pixels
+function ndcToScreen(ndc, width, height) {
+  const xPx = (ndc.x * 0.5 + 0.5) * width;
+  const yPx = (-ndc.y * 0.5 + 0.5) * height; // Inversión de Y
+  return { xPx, yPx };
+}
+
+// Visualización de profundidad con gradiente de color
+function depthToColor(zCam, cam) {
+  const near = cam.near;
+  const far = cam.far;
+  const d = Math.abs(zCam);
+  const t = Math.min(1, Math.max(0, (d - near) / (far - near)));
+  
+  // Gradiente: azul (cerca) → verde → rojo (lejos)
+  const r = Math.floor(255 * Math.min(1, t * 1.6));
+  const g = Math.floor(255 * Math.max(0, 1 - Math.abs(t - 0.5) * 2));
+  const b = Math.floor(255 * (1 - t));
+  return `rgb(${r},${g},${b})`;
+}
+
+// Conmutación de cámaras
+document.getElementById("btnPerspective").onclick = () => {
+  camera = camPerspective; // FOV 50°, aspect ratio dinámico
+};
+document.getElementById("btnOrtho").onclick = () => {
+  camera = camOrtho; // Frustum size 6, sin perspective divide
+};
+```
+
+### 7. Sistema de Iluminación de 3 Puntos
 
 ```javascript
 // LightingManager.js - Preset Atardecer
@@ -679,6 +878,53 @@ applyLightingPreset(preset) {
 📹 **[Ver escena completa - Punto 3](renders/punto3/punto_tres_escena.mp4)**
 
 *Video mostrando la aplicación de shaders GLSL personalizados mediante ShaderManager: vertex shaders para transformaciones, fragment shaders para coloración, uniforms dinámicos, y técnicas avanzadas como coordenadas baricéntricas y texturas procedurales.*
+
+---
+
+### Punto 9: Interfaces Multimodales (Voz + Gestos)
+
+#### Demostración Animada - Punto 9
+
+<div align="center">
+
+![Punto 9 - Voz + Gestos](renders/punto9/punto_nueve_voz_gestos.gif)
+
+*Demostración del sistema multimodal: reconocimiento de voz en español ("subir", "bajar", "girar") + detección de gestos con MediaPipe Hands (mano arriba/abajo/neutra). El cubo responde a comandos de voz OR gestos, cambiando posición, rotación y color en tiempo real con retroalimentación visual en UI overlay.*
+
+</div>
+
+**Características demostradas**:
+- **Web Speech API**: Reconocimiento continuo en español (es-ES)
+- **MediaPipe Hands**: Detección de 21 landmarks, clasificación de posición de mano
+- **Lógica condicional**: Comando de voz OR gesto activa acción
+- **Sincronización**: Hilos concurrentes para ambas entradas
+- **Retroalimentación**: Status div con estado en tiempo real (🎤 Voz | ✋ Gesto)
+- **Acciones visuales**: Movimiento Y, rotación, cambio de color RGB
+
+---
+
+### Punto 11: Espacios Proyectivos y Matrices de Proyección
+
+#### Demostración Animada - Punto 11
+
+<div align="center">
+
+![Punto 11 - Proyecciones](renders/punto11/punto_once_proyecciones.gif)
+
+*Demostración de proyecciones perspectiva vs ortográfica con visualización de profundidad: 24 puntos 3D proyectados a 2D mediante matrices MVP, marcadores DOM sincronizados con coordenadas NDC, gradiente de color basado en Z (camera-space), y conmutación en tiempo real entre cámaras. Display de matrices View, Projection y MVP actualizadas cada frame.*
+
+</div>
+
+**Características demostradas**:
+- **Coordenadas homogéneas**: Vector4(x, y, z, 1.0) para transformaciones proyectivas
+- **Matriz MVP**: Model-View-Projection calculada manualmente (proj * view * model)
+- **Perspective divide**: (x/w, y/w, z/w) → NDC [-1, 1]
+- **NDC to screen**: Mapeo de Normalized Device Coordinates a píxeles
+- **Cámara perspectiva**: FOV 50°, simulación de visión humana
+- **Cámara ortográfica**: Sin distorsión por perspectiva, frustum adaptativo
+- **Depth visualization**: Color coding RGB basado en distancia Z (azul → verde → rojo)
+- **Frustum culling**: Marcadores ocultos fuera del volumen de visión
+- **Matrix display**: Vista textual de 16 elementos de cada matriz 4x4
 
 ---
 
