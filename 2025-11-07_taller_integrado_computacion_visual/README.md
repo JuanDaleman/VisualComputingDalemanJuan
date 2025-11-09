@@ -49,9 +49,420 @@ Construir un ecosistema visual donde **color, forma, geometría y luz** dialogue
 
 ---
 
-### 🚧 Puntos 3-11: Planificados
+### ✅ Punto 3: Shaders Personalizados y Efectos Visuales
 
-- **Punto 3**: Shaders personalizados y efectos (GLSL)
+**Estado**: Completado ✅
+
+**Implementación**:
+- ✅ **7 Shaders GLSL**: Color posición, animado, toon shading, gradiente, distorsión UV, textura procedural, wireframe
+- ✅ **Sistema de gestión completo**: ShaderManager.js con actualización automática
+- ✅ **Build system profesional**: vite-plugin-glsl para archivos .vert/.frag
+- ✅ **Controles intuitivos**: UI con botones y atajos de teclado (1-7, 0)
+- ✅ **Técnicas avanzadas**: Coordenadas baricéntricas, uniforms, varyings
+
+**Shaders implementados**:
+1. **positionColor**: Gradiente por altura con variación horizontal
+2. **timeColor**: 3 ondas RGB animadas independientes
+3. **toonShading**: Cel-shading + detección de bordes
+4. **gradient**: Interpolación animada entre dos colores
+5. **uvDistortion**: Ondas sinusoidales + distorsión radial
+6. **proceduralTexture**: 4 patrones algorítmicos (checker, dots, noise, stripes)
+7. **wireframe**: Bordes con coordenadas baricéntricas
+
+**Tecnologías**: GLSL ES 1.0, vite-plugin-glsl v1.3.1, Three.js ShaderMaterial
+
+---
+
+### ✅ Punto 3: Shaders Personalizados y Efectos Visuales
+
+**Estado**: Completado ✅
+
+**Implementación**:
+- ✅ **7 Shaders GLSL personalizados**: Vertex + Fragment shaders
+- ✅ **Efectos variados**: Color procedural, animación, cel-shading, distorsión UV
+- ✅ **Sistema de gestión**: ShaderManager.js con actualización automática de uniforms
+- ✅ **Integración completa**: UI con botones y atajos de teclado (1-7, 0)
+- ✅ **Build system**: vite-plugin-glsl para importar archivos .vert/.frag
+
+#### Shaders Implementados
+
+##### 1. Color por Posición (`positionColor`)
+**Descripción**: Gradiente de color basado en la posición vertical (eje Y) de cada vértice.
+
+**Técnica**: 
+- Interpolación lineal entre dos colores (rosa → azul)
+- Normalización de coordenadas Y (rango -5 a 5)
+- Variación horizontal con ondas seno para complejidad adicional
+
+**Código Fragment Shader**:
+```glsl
+void main() {
+    float normalizedY = (vPosition.y + 5.0) / 10.0;
+    vec3 colorBottom = vec3(1.0, 0.4, 0.7); // Rosa
+    vec3 colorTop = vec3(0.4, 0.7, 1.0);    // Azul
+    
+    float horizontalVariation = sin(vPosition.x * 3.0) * 0.2;
+    float mixFactor = clamp(normalizedY + horizontalVariation, 0.0, 1.0);
+    
+    vec3 finalColor = mix(colorBottom, colorTop, mixFactor);
+    gl_FragColor = vec4(finalColor, 1.0);
+}
+```
+
+**Aplicación**: Visualización de alturas, degradados espaciales.
+
+![Color por Posición](renders/punto3/images/color_Posicion.png)
+
+---
+
+##### 2. Color Animado por Tiempo (`timeColor`)
+**Descripción**: Colores dinámicos que cambian constantemente usando el uniform `time`.
+
+**Técnica**:
+- 3 ondas independientes (seno/coseno) para canales RGB
+- Frecuencias diferentes para cada canal (2.0, 1.5, 1.0)
+- Basado en coordenadas UV para variación espacial
+
+**Código Fragment Shader**:
+```glsl
+uniform float time;
+varying vec2 vUv;
+
+void main() {
+    float r = sin(vUv.x * 10.0 + time * 2.0) * 0.5 + 0.5;
+    float g = cos(vUv.y * 10.0 + time * 1.5) * 0.5 + 0.5;
+    float b = sin((vUv.x + vUv.y) * 5.0 + time) * 0.5 + 0.5;
+    
+    gl_FragColor = vec4(r, g, b, 1.0);
+}
+```
+
+**Aplicación**: Efectos psicodélicos, visualización de audio, ambientes dinámicos.
+
+![Color Animado](renders/punto3/images/color_Animado.png)
+
+---
+
+##### 3. Toon Shading / Cel Shading (`toonShading`)
+**Descripción**: Renderizado estilo cartoon/anime con niveles discretos de iluminación.
+
+**Técnica**:
+- Cálculo de intensidad lumínica: `dot(normal, lightDirection)`
+- Discretización con `floor()`: Convertir gradiente continuo en bandas
+- Detección de bordes: Oscurecer cuando `dot(viewDir, normal) < 0.3`
+
+**Código Fragment Shader**:
+```glsl
+uniform vec3 lightDirection;
+uniform vec3 baseColor;
+uniform int shadingLevels;
+
+void main() {
+    vec3 normal = normalize(vNormal);
+    vec3 lightDir = normalize(lightDirection);
+    
+    float intensity = max(dot(normal, lightDir), 0.0);
+    
+    // Discretizar intensidad en niveles
+    float levels = float(shadingLevels);
+    intensity = floor(intensity * levels) / levels;
+    
+    vec3 color = baseColor * intensity;
+    
+    // Detección de bordes
+    vec3 viewDir = normalize(vViewPosition);
+    float edge = dot(viewDir, normal);
+    if (edge < 0.3) {
+        color *= 0.5; // Oscurecer bordes
+    }
+    
+    gl_FragColor = vec4(color, 1.0);
+}
+```
+
+**Aplicación**: Estilos NPR (Non-Photorealistic Rendering), videojuegos cel-shaded.
+
+![Toon Shading](renders/punto3/images/toon_Shading.png)
+
+---
+
+##### 4. Gradiente Animado (`gradient`)
+**Descripción**: Interpolación suave entre dos colores con modulación temporal.
+
+**Técnica**:
+- Mix lineal entre `color1` y `color2` basado en UV.x
+- Modulación con onda seno: `sin(time * speed + uv.y * π)`
+- Variación vertical adicional para profundidad visual
+
+**Código Fragment Shader**:
+```glsl
+uniform float time;
+uniform vec3 color1;
+uniform vec3 color2;
+uniform float gradientSpeed;
+
+void main() {
+    float mixFactor = vUv.x + sin(time * gradientSpeed + vUv.y * 3.14159) * 0.3;
+    mixFactor = clamp(mixFactor, 0.0, 1.0);
+    
+    vec3 finalColor = mix(color1, color2, mixFactor);
+    
+    // Variación vertical
+    float verticalWave = sin(vUv.y * 5.0 + time * 0.5) * 0.1;
+    finalColor += vec3(verticalWave);
+    
+    gl_FragColor = vec4(finalColor, 1.0);
+}
+```
+
+**Aplicación**: Fondos dinámicos, transiciones, skyboxes animados.
+
+![Gradiente](renders/punto3/images/gradiente.png)
+
+---
+
+##### 5. Distorsión UV (`uvDistortion`)
+**Descripción**: Deformación de coordenadas de textura para efectos líquidos/fluidos.
+
+**Técnica**:
+- Ondas sinusoidales en X e Y: `sin(uv.y * freq + time)`, `cos(uv.x * freq + time)`
+- Ondas radiales desde el centro: `distance(uv, center)`
+- Combinación de distorsiones para complejidad
+
+**Código Fragment Shader**:
+```glsl
+uniform float time;
+uniform float distortionStrength;
+uniform float waveFrequency;
+
+void main() {
+    vec2 distortedUv = vUv;
+    
+    // Ondas horizontales y verticales
+    distortedUv.x += sin(vUv.y * waveFrequency + time * 2.0) * distortionStrength;
+    distortedUv.y += cos(vUv.x * waveFrequency + time * 1.5) * distortionStrength;
+    
+    // Ondas radiales
+    vec2 center = vec2(0.5, 0.5);
+    float dist = distance(vUv, center);
+    float radialWave = sin(dist * 10.0 - time * 3.0) * distortionStrength * 0.5;
+    distortedUv += normalize(vUv - center) * radialWave;
+    
+    // Aplicar colores basados en UV distorsionadas
+    vec3 color = computeColor(distortedUv);
+    gl_FragColor = vec4(color, 1.0);
+}
+```
+
+**Aplicación**: Agua, portales, efectos de calor, refracción.
+
+![Distorsión UV](renders/punto3/images/distorsion_UV.png)
+
+---
+
+##### 6. Texturizado Procedural (`proceduralTexture`)
+**Descripción**: Generación algorítmica de patrones sin imágenes externas.
+
+**Técnica**:
+- **4 patrones**: Tablero de ajedrez, puntos, ruido, rayas
+- Función de ruido pseudo-aleatorio: `fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453)`
+- Selección dinámica vía uniform `patternType`
+
+**Código Fragment Shader (Patrón Checkerboard)**:
+```glsl
+vec3 checkerboard(vec2 uv, float scale) {
+    vec2 scaledUv = uv * scale;
+    float checker = mod(floor(scaledUv.x) + floor(scaledUv.y), 2.0);
+    return vec3(checker);
+}
+
+void main() {
+    vec3 pattern;
+    if (patternType == 0) pattern = checkerboard(vUv, scale);
+    else if (patternType == 1) pattern = dots(vUv, scale);
+    else if (patternType == 2) pattern = noise(vUv, scale, time);
+    else pattern = stripes(vUv, scale, time);
+    
+    vec3 color1 = vec3(0.1, 0.2, 0.5);
+    vec3 color2 = vec3(0.9, 0.7, 0.3);
+    vec3 finalColor = mix(color1, color2, pattern);
+    
+    gl_FragColor = vec4(finalColor, 1.0);
+}
+```
+
+**Aplicación**: Texturas generativas, materiales sintéticos, debugging UV.
+
+![Textura Procedural](renders/punto3/images/textura_Procedural.png)
+
+---
+
+##### 7. Wireframe (`wireframe`)
+**Descripción**: Renderizado de solo los bordes de la geometría usando coordenadas baricéntricas.
+
+**Técnica**:
+- Atributo custom `barycentric`: (1,0,0), (0,1,0), (0,0,1) por triángulo
+- Función `fwidth()` para anti-aliasing
+- `smoothstep()` para suavizar bordes
+- Mix entre color de wireframe y color de relleno
+
+**Código Fragment Shader**:
+```glsl
+uniform vec3 wireframeColor;
+uniform vec3 fillColor;
+uniform float wireframeThickness;
+
+void main() {
+    vec3 deltas = fwidth(vBarycentric);
+    vec3 smoothing = deltas * wireframeThickness;
+    vec3 thickness = smoothing * 1.5;
+    
+    vec3 edgeFactors = smoothstep(vec3(0.0), thickness, vBarycentric);
+    float edgeFactor = min(min(edgeFactors.x, edgeFactors.y), edgeFactors.z);
+    
+    vec3 finalColor = mix(wireframeColor, fillColor, edgeFactor);
+    gl_FragColor = vec4(finalColor, 1.0);
+}
+```
+
+**Preparación de geometría** (JavaScript):
+```javascript
+prepareWireframeGeometry(mesh) {
+    const geometry = mesh.geometry;
+    const positionAttribute = geometry.attributes.position;
+    const count = positionAttribute.count;
+    const barycentric = new Float32Array(count * 3);
+    
+    for (let i = 0; i < count; i += 3) {
+        barycentric[i * 3 + 0] = 1; // Vértice 1: (1, 0, 0)
+        barycentric[i * 3 + 1] = 0;
+        barycentric[i * 3 + 2] = 0;
+        // ... vértices 2 y 3
+    }
+    
+    geometry.setAttribute('barycentric', new THREE.BufferAttribute(barycentric, 3));
+}
+```
+
+**Aplicación**: Debugging de geometría, estilo técnico/arquitectónico, visualización de mallas.
+
+![Wireframe](renders/punto3/images/wireframe.png)
+
+---
+
+#### Arquitectura del Sistema de Shaders
+
+**ShaderManager.js**: Clase centralizada para gestión de shaders
+
+```javascript
+class ShaderManager {
+    constructor(scene) {
+        this.scene = scene;
+        this.time = 0;
+        this.materials = {};
+        this.shadedObjects = new Map();
+        this.initializeMaterials();
+    }
+    
+    initializeMaterials() {
+        // Crear ShaderMaterial para cada shader
+        this.materials.positionColor = new THREE.ShaderMaterial({
+            vertexShader: positionColorVert,
+            fragmentShader: positionColorFrag,
+            uniforms: { time: { value: 0 } },
+            side: THREE.DoubleSide
+        });
+        // ... otros materiales
+    }
+    
+    applyShader(object, shaderName) {
+        if (!this.shadedObjects.has(object)) {
+            this.shadedObjects.set(object, object.material); // Guardar original
+        }
+        object.material = this.materials[shaderName];
+    }
+    
+    update(deltaTime) {
+        this.time += deltaTime;
+        // Actualizar uniforms de tiempo
+        Object.values(this.materials).forEach(material => {
+            if (material.uniforms.time) {
+                material.uniforms.time.value = this.time;
+            }
+        });
+    }
+}
+```
+
+**Build System**: vite-plugin-glsl
+
+```javascript
+// vite.config.js
+import glsl from 'vite-plugin-glsl';
+
+export default defineConfig({
+    plugins: [
+        glsl({
+            include: ['**/*.glsl', '**/*.vert', '**/*.frag', '**/*.vs', '**/*.fs'],
+            watch: true,
+            warnDuplicatedImports: true
+        })
+    ]
+});
+```
+
+**Importación de Shaders**:
+```javascript
+import vertexShader from './shaders/positionColor.vert';
+import fragmentShader from './shaders/positionColor.frag';
+```
+
+#### Controles de Usuario
+
+**Interfaz UI**:
+- Botones individuales para cada shader
+- Botón "Limpiar" para restaurar materiales originales
+- Panel minimizable (Tab) para mejor visualización
+
+**Atajos de Teclado**:
+- **1**: Color por Posición
+- **2**: Color Animado
+- **3**: Toon Shading
+- **4**: Gradiente
+- **5**: Distorsión UV
+- **6**: Textura Procedural
+- **7**: Wireframe
+- **0**: Limpiar todos los shaders
+- **Tab**: Minimizar/Maximizar menú UI
+
+#### Evidencias Visuales
+
+**Demostración Animada**:
+
+![Demostración de Shaders](renders/punto3/gif_punto_tres.gif)
+
+**Video Completo**: [renders/punto3/punto_tres_escena.mp4](renders/punto3/punto_tres_escena.mp4)
+
+#### Tecnologías Utilizadas
+
+- **GLSL ES 1.0**: Lenguaje de shading para WebGL
+- **vite-plugin-glsl v1.3.1**: Importación de archivos shader
+- **Three.js ShaderMaterial**: Integración con sistema de materiales
+- **Coordenadas baricéntricas**: Técnica avanzada para wireframe
+
+#### Conceptos GLSL Aplicados
+
+1. **Varying variables**: Interpolación vertex → fragment
+2. **Uniform variables**: Datos JavaScript → GLSL
+3. **Funciones built-in**: `sin()`, `cos()`, `mix()`, `clamp()`, `smoothstep()`, `fwidth()`
+4. **Espacios de color**: Conversión RGB, manipulación de canales
+5. **Transformaciones matriciales**: MVP (Model-View-Projection)
+6. **Coordenadas baricéntricas**: Identificación de bordes de triángulos
+
+---
+
+### 🚧 Puntos 4-11: Planificados
+
 - **Punto 4**: Texturizado dinámico y partículas
 - **Punto 5**: Visualización de imágenes y video 360°
 - **Punto 6**: Entrada e interacción (UI, input, colisiones)
@@ -98,6 +509,14 @@ Sistema: Windows 10/11, Linux, macOS
 │       ├── src/
 │       │   ├── main.js                      # Aplicación principal
 │       │   ├── ColorAnalyzer.js             # Análisis CIELAB (Punto 1)
+│       │   ├── shaders/                     # Shaders GLSL (Punto 3)
+│       │   │   ├── positionColor.vert/frag
+│       │   │   ├── timeColor.vert/frag
+│       │   │   ├── toonShading.vert/frag
+│       │   │   ├── gradient.vert/frag
+│       │   │   ├── uvDistortion.vert/frag
+│       │   │   ├── proceduralTexture.vert/frag
+│       │   │   └── wireframe.vert/frag
 │       │   └── managers/
 │       │       ├── CameraManager.js         # Control de cámaras
 │       │       ├── LightingManager.js       # Iluminación y HDRI
@@ -105,7 +524,8 @@ Sistema: Windows 10/11, Linux, macOS
 │       │       ├── AnimationManager.js      # Animaciones TWEEN
 │       │       ├── UIManager.js             # Interfaz de usuario
 │       │       ├── SceneManager.js          # Gestión de escena
-│       │       └── ProceduralGeometryManager.js  # Punto 2
+│       │       ├── ProceduralGeometryManager.js  # Punto 2
+│       │       └── ShaderManager.js         # Gestión de shaders (Punto 3)
 │       ├── public/
 │       │   ├── models/          # Symlinks a modelos GLB
 │       │   ├── textures/        # Symlinks a texturas PBR
@@ -129,9 +549,20 @@ Sistema: Windows 10/11, Linux, macOS
 │   │   ├── images/              # Screenshots
 │   │   ├── gif_punto_uno.gif    # Demostración animada
 │   │   └── punto_uno_escena.mp4 # Video completo
-│   └── punto2/
-│       ├── gif_punto_dos.gif
-│       └── punto_dos_escena.mp4
+│   ├── punto2/
+│   │   ├── gif_punto_dos.gif
+│   │   └── punto_dos_escena.mp4
+│   └── punto3/
+│       ├── images/              # Screenshots de cada shader
+│       │   ├── color_Posicion.png
+│       │   ├── color_Animado.png
+│       │   ├── toon_Shading.png
+│       │   ├── gradiente.png
+│       │   ├── distorsion_UV.png
+│       │   ├── textura_Procedural.png
+│       │   └── wireframe.png
+│       ├── gif_punto_tres.gif   # Demostración animada
+│       └── punto_tres_escena.mp4 # Video completo
 ├── docs/
 │   ├── color_analysis.md        # Análisis cromático CIELAB
 │   └── procedural_modeling.md   # Comparativa modelado
@@ -193,6 +624,20 @@ cp -r hdri/* threejs/punto1_materiales_luz/public/hdri/
 | **F** | Generar Sierpinski Fractal (pirámide recursiva) |
 | **K** | Generar Torus Knot (nudo toroidal) |
 
+### Teclado - Punto 3 (Shaders Personalizados)
+
+| Tecla | Acción |
+|-------|--------|
+| **1** | Aplicar shader Color por Posición |
+| **2** | Aplicar shader Color Animado |
+| **3** | Aplicar shader Toon Shading |
+| **4** | Aplicar shader Gradiente |
+| **5** | Aplicar shader Distorsión UV |
+| **6** | Aplicar shader Textura Procedural |
+| **7** | Aplicar shader Wireframe |
+| **0** | Limpiar todos los shaders |
+| **Tab** | Minimizar/Maximizar menú UI |
+
 ### Mouse
 
 - **Click Izquierdo + Arrastrar**: Rotar cámara orbital
@@ -223,6 +668,16 @@ cp -r hdri/* threejs/punto1_materiales_luz/public/hdri/
 - 🎗️ Torus Knot - Topología compleja
 - ▶️ Animar - Modificación dinámica
 - 🗑️ Limpiar - Remover geometría
+
+**Sección Shaders Personalizados** ✨:
+- 1️⃣ Color Posición - Gradiente por altura
+- 2️⃣ Color Animado - Ondas RGB temporales
+- 3️⃣ Toon Shading - Cel-shading cartoon
+- 4️⃣ Gradiente - Interpolación animada
+- 5️⃣ Distorsión UV - Efectos líquidos
+- 6️⃣ Textura Proc. - Patrones algorítmicos
+- 7️⃣ Wireframe - Bordes baricéntricos
+- 0️⃣ Limpiar - Restaurar materiales
 
 **Sección Análisis Cromático** 🔬:
 - Ver Paleta RGB/HSV

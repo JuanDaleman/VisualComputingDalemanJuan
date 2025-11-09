@@ -37,6 +37,50 @@
             z-index: 100;
             max-height: 90vh;
             overflow-y: auto;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        #ui-panel.minimized {
+            transform: translateX(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #toggle-menu {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(76, 175, 80, 0.9);
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            z-index: 101;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        #toggle-menu:hover {
+            background: rgba(76, 175, 80, 1);
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(76, 175, 80, 0.5);
+        }
+
+        #toggle-menu.menu-open {
+            left: calc(320px + 20px);
+        }
+
+        @media (max-width: 768px) {
+            #ui-panel {
+                width: 90%;
+                max-width: 300px;
+            }
+            
+            #toggle-menu.menu-open {
+                left: calc(90% + 20px);
+            }
         }
 
         .ui-section {
@@ -188,6 +232,9 @@
             <p>Cargando escena PBR...</p>
         </div>
 
+        <!-- Toggle Menu Button -->
+        <button id="toggle-menu" class="menu-open" title="Minimizar/Maximizar menú (Tab)">☰</button>
+
         <!-- UI Panel -->
         <div id="ui-panel">
             <div class="ui-section">
@@ -219,6 +266,18 @@
                 <button id="procedural-knot">🎗️ Torus Knot</button>
                 <button id="procedural-animate">▶️ Animar</button>
                 <button id="procedural-clear">🗑️ Limpiar</button>
+            </div>
+
+            <div class="ui-section">
+                <h3>✨ Shaders Personalizados</h3>
+                <button id="shader-position">1️⃣ Color Posición</button>
+                <button id="shader-time">2️⃣ Color Animado</button>
+                <button id="shader-toon">3️⃣ Toon Shading</button>
+                <button id="shader-gradient">4️⃣ Gradiente</button>
+                <button id="shader-distortion">5️⃣ Distorsión UV</button>
+                <button id="shader-procedural">6️⃣ Textura Proc.</button>
+                <button id="shader-wireframe">7️⃣ Wireframe</button>
+                <button id="shader-clear">0️⃣ Limpiar</button>
             </div>
 
             <div class="ui-section">
@@ -264,9 +323,46 @@
             • <strong>G</strong>: Wave Grid<br>
             • <strong>S</strong>: Spiral<br>
             • <strong>F</strong>: Fractal<br>
-            • <strong>K</strong>: Knot
+            • <strong>K</strong>: Knot<br>
+            • <strong>1-7</strong>: Aplicar shaders<br>
+            • <strong>0</strong>: Limpiar shaders<br>
+            • <strong>Tab</strong>: Minimizar menú
         </div>
     </div>
+
+    <script>
+        // Toggle menu functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleBtn = document.getElementById('toggle-menu');
+            const uiPanel = document.getElementById('ui-panel');
+            let menuOpen = true;
+
+            function toggleMenu() {
+                menuOpen = !menuOpen;
+                if (menuOpen) {
+                    uiPanel.classList.remove('minimized');
+                    toggleBtn.classList.add('menu-open');
+                    toggleBtn.textContent = '☰';
+                    toggleBtn.title = 'Minimizar menú (Tab)';
+                } else {
+                    uiPanel.classList.add('minimized');
+                    toggleBtn.classList.remove('menu-open');
+                    toggleBtn.textContent = '▶';
+                    toggleBtn.title = 'Maximizar menú (Tab)';
+                }
+            }
+
+            toggleBtn.addEventListener('click', toggleMenu);
+
+            // Tab key shortcut
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Tab') {
+                    e.preventDefault();
+                    toggleMenu();
+                }
+            });
+        });
+    </script>
 
     <script type="module" src="src/main.js"></script>
 </body>

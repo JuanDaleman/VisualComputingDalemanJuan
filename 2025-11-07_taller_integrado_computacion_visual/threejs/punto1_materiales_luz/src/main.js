@@ -12,6 +12,7 @@ import MaterialManager from './managers/MaterialManager.js';
 import AnimationManager from './managers/AnimationManager.js';
 import UIManager from './managers/UIManager.js';
 import ProceduralGeometryManager from './managers/ProceduralGeometryManager.js';
+import { ShaderManager } from './managers/ShaderManager.js';
 import ColorAnalyzer from './ColorAnalyzer.js';
 
 class TallerApp {
@@ -28,6 +29,7 @@ class TallerApp {
         this.uiManager = null;
         this.colorAnalyzer = null;  // NEW
         this.proceduralGeometryManager = null;  // NEW for Point 2
+        this.shaderManager = null;  // NEW for Point 3
         
         // Core Three.js objects
         this.renderer = null;
@@ -115,6 +117,9 @@ class TallerApp {
             this.scene, 
             this.materialManager
         );
+        
+        // Initialize ShaderManager (Point 3)
+        this.shaderManager = new ShaderManager(this.scene);
         
         this.uiManager = new UIManager(this);
         
@@ -427,6 +432,9 @@ class TallerApp {
         // Update procedural geometry animations (Point 2)
         const deltaTime = 16; // Approximate 60fps
         this.proceduralGeometryManager?.update(deltaTime);
+        
+        // Update shaders (Point 3)
+        this.shaderManager?.update(deltaTime * 0.001); // Convert to seconds
         
         // Update lighting if needed
         this.lightingManager?.update();

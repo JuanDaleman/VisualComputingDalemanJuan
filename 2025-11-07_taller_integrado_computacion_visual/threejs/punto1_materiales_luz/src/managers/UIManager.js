@@ -54,6 +54,19 @@ class UIManager {
             this.showNotification('🗑️ Geometría procedural limpiada');
         });
         
+        // Shader Controls (Point 3)
+        document.getElementById('shader-position')?.addEventListener('click', () => this.applyShaderToAll('positionColor'));
+        document.getElementById('shader-time')?.addEventListener('click', () => this.applyShaderToAll('timeColor'));
+        document.getElementById('shader-toon')?.addEventListener('click', () => this.applyShaderToAll('toonShading'));
+        document.getElementById('shader-gradient')?.addEventListener('click', () => this.applyShaderToAll('gradient'));
+        document.getElementById('shader-distortion')?.addEventListener('click', () => this.applyShaderToAll('uvDistortion'));
+        document.getElementById('shader-procedural')?.addEventListener('click', () => this.applyShaderToAll('proceduralTexture'));
+        document.getElementById('shader-wireframe')?.addEventListener('click', () => this.applyShaderToAll('wireframe'));
+        document.getElementById('shader-clear')?.addEventListener('click', () => {
+            this.app.shaderManager?.clearAllShaders();
+            this.showNotification('🎨 Shaders limpiados');
+        });
+        
         window.addEventListener('keydown', (e) => {
             if (e.key === 'c') { this.app.cameraManager.switchCamera(); this.app.controls.object = this.app.cameraManager.activeCamera; }
             else if (e.key === 'l') { const p = ['day', 'sunset', 'night']; const i = (p.indexOf(this.app.lightingManager.currentPreset || 'day') + 1) % p.length; this.app.lightingManager.applyLightingPreset(p[i]); }
@@ -63,7 +76,43 @@ class UIManager {
             else if (e.key === 's') this.app.proceduralGeometryManager?.generateHelixSpiral();
             else if (e.key === 'f') this.app.proceduralGeometryManager?.generateSierpinskiPyramid();
             else if (e.key === 'k') this.app.proceduralGeometryManager?.generateTorusKnot();
+            // Shader shortcuts (Point 3)
+            else if (e.key === '1') this.applyShaderToAll('positionColor');
+            else if (e.key === '2') this.applyShaderToAll('timeColor');
+            else if (e.key === '3') this.applyShaderToAll('toonShading');
+            else if (e.key === '4') this.applyShaderToAll('gradient');
+            else if (e.key === '5') this.applyShaderToAll('uvDistortion');
+            else if (e.key === '6') this.applyShaderToAll('proceduralTexture');
+            else if (e.key === '7') this.applyShaderToAll('wireframe');
+            else if (e.key === '0') { this.app.shaderManager?.clearAllShaders(); this.showNotification('🎨 Shaders limpiados'); }
         });
+    }
+    
+    applyShaderToAll(shaderName) {
+        if (!this.app.shaderManager) {
+            this.showNotification('Error: ShaderManager no inicializado', 'error');
+            return;
+        }
+        
+        let count = 0;
+        this.app.scene.traverse((child) => {
+            if (child.isMesh && !child.name?.includes('Ground') && !child.name?.includes('Helper')) {
+                this.app.shaderManager.applyShader(child, shaderName);
+                count++;
+            }
+        });
+        
+        const shaderNames = {
+            positionColor: 'Color por Posición',
+            timeColor: 'Color Animado',
+            toonShading: 'Toon Shading',
+            gradient: 'Gradiente',
+            uvDistortion: 'Distorsión UV',
+            proceduralTexture: 'Textura Procedural',
+            wireframe: 'Wireframe'
+        };
+        
+        this.showNotification(`🎨 ${shaderNames[shaderName]} aplicado a ${count} objetos`);
     }
     
     cycleMaterials() {
