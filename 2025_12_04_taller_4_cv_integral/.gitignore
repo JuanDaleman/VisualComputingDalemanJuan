@@ -1,0 +1,62 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints
+
+# Models (large files)
+*.pt
+*.pth
+*.h5
+*.weights
+*.onnx
+
+# Data (can be large)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Node
+node_modules/
+npm-debug.log*
+.npm
+
+# Build outputs
+threejs/dist/
+threejs/build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Results (keep structure, ignore content)
+# results/videos/*.mp4
+# results/videos/*.avi
+# results/images/*.png
+# results/images/*.jpg
+# results/gifs/*.gif
+
+# Keep directory structure
+!results/videos/.gitkeep
+!results/images/.gitkeep
+!results/gifs/.gitkeep
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/models/.gitkeep
