@@ -39,7 +39,7 @@ Se creó una escena 3D interactiva con las siguientes características:
   - **Cambio de Cámara:** Al presionar la tecla **'C'**, se alterna entre una vista superior y una vista lateral baja.
 
 ### Resultados
-![Escena threejs](threejs/public/escene.gif)
+![Escena threejs](threejs/gifs/escene.gif)
 
 ### Instrucciones de ejecución
 
